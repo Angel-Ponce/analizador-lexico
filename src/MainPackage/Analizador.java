@@ -27,21 +27,135 @@ public class Analizador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainPanel = new javax.swing.JPanel();
+        sidebar = new javax.swing.JPanel();
+        buttonOpenFile = new javax.swing.JButton();
+        buttonViewReport = new javax.swing.JButton();
+        buttonSaveReport = new javax.swing.JButton();
+        buttonSeeTokens = new javax.swing.JButton();
+        buttonAddToken = new javax.swing.JButton();
+        buttonClearWindow = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        console = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        mainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        mainPanel.setForeground(new java.awt.Color(255, 255, 255));
+
+        sidebar.setBackground(new java.awt.Color(102, 102, 102));
+
+        buttonOpenFile.setBackground(new java.awt.Color(51, 51, 51));
+        buttonOpenFile.setForeground(new java.awt.Color(0, 0, 0));
+        buttonOpenFile.setText("Abrir archivo");
+
+        buttonViewReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonViewReport.setForeground(new java.awt.Color(0, 0, 0));
+        buttonViewReport.setText("Ver reporte");
+
+        buttonSaveReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonSaveReport.setForeground(new java.awt.Color(0, 0, 0));
+        buttonSaveReport.setText("Guardar reporte");
+
+        buttonSeeTokens.setBackground(new java.awt.Color(51, 51, 51));
+        buttonSeeTokens.setForeground(new java.awt.Color(0, 0, 0));
+        buttonSeeTokens.setText("Ver tokens");
+
+        buttonAddToken.setBackground(new java.awt.Color(51, 51, 51));
+        buttonAddToken.setForeground(new java.awt.Color(0, 0, 0));
+        buttonAddToken.setText("Agregar token");
+
+        buttonClearWindow.setBackground(new java.awt.Color(51, 51, 51));
+        buttonClearWindow.setForeground(new java.awt.Color(0, 0, 0));
+        buttonClearWindow.setText("Limpiar");
+        buttonClearWindow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearWindowActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("ANALIZADOR LÉXICO");
+
+        javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
+        sidebar.setLayout(sidebarLayout);
+        sidebarLayout.setHorizontalGroup(
+            sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sidebarLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonClearWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonAddToken, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonSeeTokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonSaveReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonViewReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
+        );
+        sidebarLayout.setVerticalGroup(
+            sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sidebarLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63)
+                .addComponent(buttonOpenFile)
+                .addGap(18, 18, 18)
+                .addComponent(buttonViewReport)
+                .addGap(18, 18, 18)
+                .addComponent(buttonSaveReport)
+                .addGap(18, 18, 18)
+                .addComponent(buttonSeeTokens)
+                .addGap(18, 18, 18)
+                .addComponent(buttonAddToken)
+                .addGap(18, 18, 18)
+                .addComponent(buttonClearWindow)
+                .addContainerGap(173, Short.MAX_VALUE))
+        );
+
+        console.setColumns(20);
+        console.setRows(5);
+        jScrollPane1.setViewportView(console);
+
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(sidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(sidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonClearWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearWindowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonClearWindowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -54,7 +168,7 @@ public class Analizador extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -79,5 +193,16 @@ public class Analizador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAddToken;
+    private javax.swing.JButton buttonClearWindow;
+    private javax.swing.JButton buttonOpenFile;
+    private javax.swing.JButton buttonSaveReport;
+    private javax.swing.JButton buttonSeeTokens;
+    private javax.swing.JButton buttonViewReport;
+    private javax.swing.JTextArea console;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JPanel sidebar;
     // End of variables declaration//GEN-END:variables
 }
