@@ -1,0 +1,46 @@
+number
+bool
+char
+string
+array
+print
+number fun
+bool fun
+char fun
+string fun
+array fun
+.clear()
+.len
+send
+class
+constructor
+my
+make object
+for
+loop
+is
+else is
+else
++
+-
+*
+/
+modulus
+(
+)
+[
+]
+{
+}
+.
+<
+>
+=
+==
+!=
+||
+&&
+<=
+>=
+--
+\

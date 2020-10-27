@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
@@ -33,11 +36,30 @@ public class Txt {
                 lines.add(line);
             }
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println(e);
         }
         
         return this.lines;
+    }
+    
+    public void addLine(String line){
+        FileWriter fw = null;
+        PrintWriter pw = null;
+        try {
+            fw = new FileWriter(this.file,true);
+            pw = new PrintWriter(fw);
+            pw.append(line+"\n");
+        } catch (IOException e) {
+            System.err.println(e);
+        }finally{
+             try {
+                if (null != fw)
+                   fw.close();
+                } catch (Exception e2) {
+                   e2.printStackTrace();
+                }
+        }
     }
     
     

@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -17,7 +18,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Angel
  */
 public class Analizador extends javax.swing.JFrame {
-
+    File tokens = new File("src/Files/Tokens.txt");
+    Txt txtTokens = new Txt(tokens);
     /**
      * Creates new form Analizador
      */
@@ -76,10 +78,20 @@ public class Analizador extends javax.swing.JFrame {
         buttonSeeTokens.setBackground(new java.awt.Color(51, 51, 51));
         buttonSeeTokens.setForeground(new java.awt.Color(0, 0, 0));
         buttonSeeTokens.setText("Ver tokens");
+        buttonSeeTokens.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSeeTokensActionPerformed(evt);
+            }
+        });
 
         buttonAddToken.setBackground(new java.awt.Color(51, 51, 51));
         buttonAddToken.setForeground(new java.awt.Color(0, 0, 0));
         buttonAddToken.setText("Agregar token");
+        buttonAddToken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddTokenActionPerformed(evt);
+            }
+        });
 
         buttonClearWindow.setBackground(new java.awt.Color(51, 51, 51));
         buttonClearWindow.setForeground(new java.awt.Color(0, 0, 0));
@@ -143,6 +155,7 @@ public class Analizador extends javax.swing.JFrame {
         );
 
         console.setColumns(20);
+        console.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         console.setRows(5);
         jScrollPane1.setViewportView(console);
 
@@ -203,6 +216,24 @@ public class Analizador extends javax.swing.JFrame {
             System.err.println(ex);
         }
     }//GEN-LAST:event_buttonGitHubActionPerformed
+
+    private void buttonSeeTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSeeTokensActionPerformed
+        
+        ArrayList<String> lines = txtTokens.getLines();
+        lines.forEach((String s) -> {
+            console.append(s+"\n");
+        });
+    }//GEN-LAST:event_buttonSeeTokensActionPerformed
+
+    private void buttonAddTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddTokenActionPerformed
+      String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo token");
+      if(newToken.length()>0){
+          txtTokens.addLine(newToken);
+          JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
+      }else{
+          JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
+      }
+    }//GEN-LAST:event_buttonAddTokenActionPerformed
 
     /**
      * @param args the command line arguments
