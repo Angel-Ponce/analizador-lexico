@@ -5,6 +5,13 @@
  */
 package MainPackage;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Angel
@@ -16,6 +23,7 @@ public class Analizador extends javax.swing.JFrame {
      */
     public Analizador() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -36,6 +44,7 @@ public class Analizador extends javax.swing.JFrame {
         buttonAddToken = new javax.swing.JButton();
         buttonClearWindow = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        buttonGitHub = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
 
@@ -45,11 +54,16 @@ public class Analizador extends javax.swing.JFrame {
         mainPanel.setBackground(new java.awt.Color(255, 255, 255));
         mainPanel.setForeground(new java.awt.Color(255, 255, 255));
 
-        sidebar.setBackground(new java.awt.Color(102, 102, 102));
+        sidebar.setBackground(new java.awt.Color(206, 240, 255));
 
         buttonOpenFile.setBackground(new java.awt.Color(51, 51, 51));
         buttonOpenFile.setForeground(new java.awt.Color(0, 0, 0));
         buttonOpenFile.setText("Abrir archivo");
+        buttonOpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOpenFileActionPerformed(evt);
+            }
+        });
 
         buttonViewReport.setBackground(new java.awt.Color(51, 51, 51));
         buttonViewReport.setForeground(new java.awt.Color(0, 0, 0));
@@ -77,8 +91,16 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("ANALIZADOR LÉXICO");
+
+        buttonGitHub.setForeground(new java.awt.Color(0, 0, 0));
+        buttonGitHub.setText("GitHub");
+        buttonGitHub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonGitHubActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
@@ -86,14 +108,16 @@ public class Analizador extends javax.swing.JFrame {
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonClearWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonAddToken, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonSeeTokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonSaveReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonViewReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonGitHub)
+                    .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonClearWindow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAddToken, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonSeeTokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonSaveReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonViewReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
@@ -113,7 +137,9 @@ public class Analizador extends javax.swing.JFrame {
                 .addComponent(buttonAddToken)
                 .addGap(18, 18, 18)
                 .addComponent(buttonClearWindow)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addComponent(buttonGitHub)
+                .addGap(17, 17, 17))
         );
 
         console.setColumns(20);
@@ -157,6 +183,27 @@ public class Analizador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonClearWindowActionPerformed
 
+    private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
+        JFileChooser open = new JFileChooser();
+        open.setFileFilter( new FileNameExtensionFilter(".txt (hola inge)", "txt", "text"));
+        open.showOpenDialog(this);
+        console.setText("");
+        
+        File myFile = open.getSelectedFile();
+        Txt file = new Txt(myFile);
+        ArrayList<String> lines = file.getLines();
+        
+    }//GEN-LAST:event_buttonOpenFileActionPerformed
+
+    private void buttonGitHubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGitHubActionPerformed
+        Desktop d = Desktop.getDesktop();
+        try {
+            d.browse(new URI("https://github.com/Angel-Ponce/analizador-lexico"));
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+    }//GEN-LAST:event_buttonGitHubActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -185,16 +232,15 @@ public class Analizador extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Analizador().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Analizador().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAddToken;
     private javax.swing.JButton buttonClearWindow;
+    private javax.swing.JButton buttonGitHub;
     private javax.swing.JButton buttonOpenFile;
     private javax.swing.JButton buttonSaveReport;
     private javax.swing.JButton buttonSeeTokens;

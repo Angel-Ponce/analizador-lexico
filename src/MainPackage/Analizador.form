@@ -70,7 +70,7 @@
         <Container class="javax.swing.JPanel" name="sidebar">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="66" green="66" red="66" type="rgb"/>
+              <Color blue="ff" green="f0" red="ce" type="rgb"/>
             </Property>
           </Properties>
 
@@ -79,14 +79,17 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel1" max="32767" attributes="0"/>
-                          <Component id="buttonClearWindow" max="32767" attributes="0"/>
-                          <Component id="buttonAddToken" max="32767" attributes="0"/>
-                          <Component id="buttonSeeTokens" max="32767" attributes="0"/>
-                          <Component id="buttonSaveReport" max="32767" attributes="0"/>
-                          <Component id="buttonViewReport" max="32767" attributes="0"/>
-                          <Component id="buttonOpenFile" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="buttonGitHub" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel1" max="32767" attributes="0"/>
+                              <Component id="buttonClearWindow" max="32767" attributes="0"/>
+                              <Component id="buttonAddToken" max="32767" attributes="0"/>
+                              <Component id="buttonSeeTokens" max="32767" attributes="0"/>
+                              <Component id="buttonSaveReport" max="32767" attributes="0"/>
+                              <Component id="buttonViewReport" max="32767" attributes="0"/>
+                              <Component id="buttonOpenFile" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="39" max="32767" attributes="0"/>
                   </Group>
@@ -109,7 +112,9 @@
                       <Component id="buttonAddToken" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonClearWindow" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="173" max="32767" attributes="0"/>
+                      <EmptySpace pref="124" max="32767" attributes="0"/>
+                      <Component id="buttonGitHub" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -125,6 +130,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Abrir archivo"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonOpenFileActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="buttonViewReport">
               <Properties>
@@ -190,10 +198,21 @@
                   <Font name="Dialog" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                  <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="ANALIZADOR L&#xc9;XICO"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="buttonGitHub">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="0" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="GitHub"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonGitHubActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
