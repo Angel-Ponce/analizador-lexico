@@ -193,7 +193,7 @@ public class Analizador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonClearWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearWindowActionPerformed
-        // TODO add your handling code here:
+        console.setText("");
     }//GEN-LAST:event_buttonClearWindowActionPerformed
 
     private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
