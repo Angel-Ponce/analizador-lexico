@@ -56,8 +56,8 @@ public class Txt {
              try {
                 if (null != fw)
                    fw.close();
-                } catch (Exception e2) {
-                   e2.printStackTrace();
+                } catch (IOException e2) {
+                   System.err.println(e2);
                 }
         }
     }

@@ -201,10 +201,12 @@ public class Analizador extends javax.swing.JFrame {
         open.setFileFilter( new FileNameExtensionFilter(".txt (hola inge)", "txt", "text"));
         open.showOpenDialog(this);
         console.setText("");
-        
         File myFile = open.getSelectedFile();
-        Txt file = new Txt(myFile);
-        ArrayList<String> lines = file.getLines();
+        if(myFile != null){
+            Txt file = new Txt(myFile);
+            ArrayList<String> lines = file.getLines();
+            lines.forEach((o)->console.append(o+"\n"));   
+        }
         
     }//GEN-LAST:event_buttonOpenFileActionPerformed
 
@@ -227,11 +229,14 @@ public class Analizador extends javax.swing.JFrame {
 
     private void buttonAddTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddTokenActionPerformed
       String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo token");
-      if(newToken.length()>0){
-          txtTokens.addLine(newToken);
-          JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
-      }else{
-          JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
+      if(newToken != null){
+        if(newToken.length()>0){
+           txtTokens.addLine(newToken);
+           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
+           console.setText("");
+       }else{
+           JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
+       }   
       }
     }//GEN-LAST:event_buttonAddTokenActionPerformed
 
