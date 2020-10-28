@@ -49,6 +49,7 @@ public class Analizador extends javax.swing.JFrame {
         buttonClearWindow = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         buttonGitHub = new javax.swing.JButton();
+        buttonViewMinimalReport = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
 
@@ -121,6 +122,15 @@ public class Analizador extends javax.swing.JFrame {
             }
         });
 
+        buttonViewMinimalReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonViewMinimalReport.setForeground(new java.awt.Color(0, 0, 0));
+        buttonViewMinimalReport.setText("Ver repote minimo");
+        buttonViewMinimalReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonViewMinimalReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
         sidebarLayout.setHorizontalGroup(
@@ -136,7 +146,8 @@ public class Analizador extends javax.swing.JFrame {
                         .addComponent(buttonSeeTokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonSaveReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonViewReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonViewMinimalReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
@@ -148,6 +159,8 @@ public class Analizador extends javax.swing.JFrame {
                 .addComponent(buttonOpenFile)
                 .addGap(18, 18, 18)
                 .addComponent(buttonViewReport)
+                .addGap(19, 19, 19)
+                .addComponent(buttonViewMinimalReport)
                 .addGap(18, 18, 18)
                 .addComponent(buttonSaveReport)
                 .addGap(18, 18, 18)
@@ -156,7 +169,7 @@ public class Analizador extends javax.swing.JFrame {
                 .addComponent(buttonAddToken)
                 .addGap(18, 18, 18)
                 .addComponent(buttonClearWindow)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(buttonGitHub)
                 .addGap(17, 17, 17))
         );
@@ -253,19 +266,51 @@ public class Analizador extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddTokenActionPerformed
 
     private void buttonViewReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewReportActionPerformed
-        ArrayList<String> lines = txtTokens.getLines();
-        String[] tokens = new String[lines.size() - 1];
-        int i = 0;
-        for(String s: lines){
-           tokens[i] = s;
-            i++;
-        }
+//        ArrayList<String> lines = txtTokens.getLines();
+//        String[] tokens = new String[lines.size() - 1];
+//        int i = 0;
+//        for(String s: lines){
+//           tokens[i] = s;
+//            i++;
+//        }
         if(this.file != null){
-           Report report = new Report(this.file, this.txtFile, tokens);    
-        }else{
-            JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
-        }
+            ArrayList<String> t = txtTokens.getLines();
+            String[] tokens = new String[t.size()];
+            for(String s: t){
+                tokens[t.indexOf(s)] = s;
+            }
+            
+            console.setText("");
+            Report report = new Report(this.file, this.txtFile,tokens);
+            ArrayList<String> r = report.getReport();
+            r.forEach((String e)->{
+                console.append(e+"\n");
+            });
+         }else{
+             JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
+         }
     }//GEN-LAST:event_buttonViewReportActionPerformed
+
+    private void buttonViewMinimalReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewMinimalReportActionPerformed
+       
+        if(this.file != null){
+            ArrayList<String> t = txtTokens.getLines();
+            String[] tokens = new String[t.size()];
+            for(String s: t){
+                tokens[t.indexOf(s)] = s;
+            }
+            
+            console.setText("");
+            Report report = new Report(this.file, this.txtFile);
+            report.setTokens(tokens);
+            ArrayList<String> r = report.getMinimalReport();
+            r.forEach((String e)->{
+                console.append(e+"\n");
+            });
+         }else{
+             JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
+         }
+    }//GEN-LAST:event_buttonViewMinimalReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,6 +352,7 @@ public class Analizador extends javax.swing.JFrame {
     private javax.swing.JButton buttonOpenFile;
     private javax.swing.JButton buttonSaveReport;
     private javax.swing.JButton buttonSeeTokens;
+    private javax.swing.JButton buttonViewMinimalReport;
     private javax.swing.JButton buttonViewReport;
     private javax.swing.JTextArea console;
     private javax.swing.JLabel jLabel1;
