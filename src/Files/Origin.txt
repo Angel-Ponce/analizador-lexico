@@ -1,0 +1,21 @@
+class Person {
+   string name;
+   string address;
+   string sex;
+   number age;
+
+   constructor(string name, string address, string sex, number age){
+      my.name = name;
+      my.address = address;
+      my.sex = sex;
+      my.age = age;
+   }
+
+   void fun greet(){
+      print("Hello my name is " + my.name);
+   }
+
+   void fun showAge(){
+      print("I am " + my.age + "years old");
+   }
+}
