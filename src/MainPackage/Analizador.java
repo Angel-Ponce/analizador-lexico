@@ -20,6 +20,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Analizador extends javax.swing.JFrame {
     File tokens = new File("src/Files/Tokens.txt");
     Txt txtTokens = new Txt(tokens);
+    File file = null;
+    Txt txtFile = null;
     /**
      * Creates new form Analizador
      */
@@ -70,6 +72,11 @@ public class Analizador extends javax.swing.JFrame {
         buttonViewReport.setBackground(new java.awt.Color(51, 51, 51));
         buttonViewReport.setForeground(new java.awt.Color(0, 0, 0));
         buttonViewReport.setText("Ver reporte");
+        buttonViewReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonViewReportActionPerformed(evt);
+            }
+        });
 
         buttonSaveReport.setBackground(new java.awt.Color(51, 51, 51));
         buttonSaveReport.setForeground(new java.awt.Color(0, 0, 0));
@@ -194,6 +201,8 @@ public class Analizador extends javax.swing.JFrame {
 
     private void buttonClearWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearWindowActionPerformed
         console.setText("");
+        this.file = null;
+        this.txtFile = null;
     }//GEN-LAST:event_buttonClearWindowActionPerformed
 
     private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
@@ -205,7 +214,9 @@ public class Analizador extends javax.swing.JFrame {
         if(myFile != null){
             Txt file = new Txt(myFile);
             ArrayList<String> lines = file.getLines();
-            lines.forEach((o)->console.append(o+"\n"));   
+            lines.forEach((o)->console.append(o+"\n"));
+            this.file = myFile;
+            this.txtFile = file;
         }
         
     }//GEN-LAST:event_buttonOpenFileActionPerformed
@@ -220,7 +231,8 @@ public class Analizador extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonGitHubActionPerformed
 
     private void buttonSeeTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSeeTokensActionPerformed
-        
+        this.file = null;
+        this.txtFile = null;
         ArrayList<String> lines = txtTokens.getLines();
         lines.forEach((String s) -> {
             console.append(s+"\n");
@@ -234,11 +246,26 @@ public class Analizador extends javax.swing.JFrame {
            txtTokens.addLine(newToken);
            JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
            console.setText("");
-       }else{
-           JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
-       }   
+        }else{
+            JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
+        }   
       }
     }//GEN-LAST:event_buttonAddTokenActionPerformed
+
+    private void buttonViewReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewReportActionPerformed
+        ArrayList<String> lines = txtTokens.getLines();
+        String[] tokens = new String[lines.size() - 1];
+        int i = 0;
+        for(String s: lines){
+           tokens[i] = s;
+            i++;
+        }
+        if(this.file != null){
+           Report report = new Report(this.file, this.txtFile, tokens);    
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonViewReportActionPerformed
 
     /**
      * @param args the command line arguments
