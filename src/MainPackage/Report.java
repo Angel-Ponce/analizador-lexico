@@ -87,34 +87,34 @@ public class Report {
                     //Tenemos que validar que la nomenclatura de la declaración del objeto sea correcta
                     if(fileLines.get(i).matches("(\\s)*[a-z]{0,9}(\\s)+"+dataType+"(\\s)*.*;")){
                         if(fileLines.get(i).contains("=")){
-                        //Variable con asignación
-                        String[] divideEquals  = fileLines.get(i).split("=");
-                        lineIndexOfVariable = i;
-                        accessModifier = getAccessModifier(fileLines.get(i));
-                        if(accessModifier.length() == 0){
-                            accessModifier = "public";
+                            //Variable con asignación
+                            String[] divideEquals  = fileLines.get(i).split("=");
+                            lineIndexOfVariable = i;
+                            accessModifier = getAccessModifier(fileLines.get(i));
+                            if(accessModifier.length() == 0){
+                                accessModifier = "public";
+                            }
+                            typeOf = dataType;
+                            String[] ignore1 = {accessModifier,typeOf,"=",divideEquals[1]};
+                            variableName = ignoreCharSequence(fileLines.get(i),ignore1);
+                            String[] ignore2 = {divideEquals[0],";","="};
+                            valueAssigned = ignoreCharSequence(fileLines.get(i),ignore2);
+                            Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
+                            properties.add(atribute);
+                        }else{
+                            //Variable sin asignación
+                            lineIndexOfVariable = i;
+                            accessModifier = getAccessModifier(fileLines.get(i));
+                            if(accessModifier.length() == 0){
+                                accessModifier = "public";
+                            }
+                            typeOf = dataType;
+                            String[] ignore1 = {accessModifier,typeOf,";"};
+                            variableName = ignoreCharSequence(fileLines.get(i),ignore1);
+                            valueAssigned = "Sin valor asignado";
+                            Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
+                            properties.add(atribute);
                         }
-                        typeOf = dataType;
-                        String[] ignore1 = {accessModifier,typeOf,"=",divideEquals[1]};
-                        variableName = ignoreCharSequence(fileLines.get(i),ignore1);
-                        String[] ignore2 = {divideEquals[0],";","="};
-                        valueAssigned = ignoreCharSequence(fileLines.get(i),ignore2);
-                        Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
-                        properties.add(atribute);
-                    }else{
-                        //Variable sin asignación
-                        lineIndexOfVariable = i;
-                        accessModifier = getAccessModifier(fileLines.get(i));
-                        if(accessModifier.length() == 0){
-                            accessModifier = "public";
-                        }
-                        typeOf = dataType;
-                        String[] ignore1 = {accessModifier,typeOf,";"};
-                        variableName = ignoreCharSequence(fileLines.get(i),ignore1);
-                        valueAssigned = "Sin valor asignado";
-                        Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
-                        properties.add(atribute);
-                    }
                     }
                 }
             }
