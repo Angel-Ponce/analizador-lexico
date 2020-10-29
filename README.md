@@ -1,3 +1,1 @@
 # analizador-lexico
-
-weco vos
