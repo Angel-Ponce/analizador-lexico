@@ -36,9 +36,12 @@ public class Report {
 
     public ArrayList<String> getReport() {
         report.clear();
+        report.add("*---------------------------*Scaneo de clase*---------------------------*");
         scanClass();
+        report.add("*---------------------------*Scaneo de atributos*---------------------------*");
         scanAttributes();
-        getClassMethods();
+        report.add("*---------------------------*Scaneo de metodos*---------------------------*");
+        scanMethods();
         return report;
     }
 
@@ -75,6 +78,20 @@ public class Report {
                     report.add("El valor de asignación es: " + attribute[4]);
                 }
 
+            }
+            report.add("");
+        }
+    }
+    
+    private void scanMethods(){
+        ArrayList<Object[]> methods = getClassMethods();
+        for (int i = 0; i < methods.size(); i++) {
+            Object[] ob = methods.get(i);
+            report.add("Se declaro un metodo de nombre "+ob[3]+" en la posicion "+ob[0]);
+            report.add("El tipo de retorno es: "+ob[2]);
+            report.add("Su modificador de acceso es: "+ob[1]);
+            if(ob[4].toString().length() > 2){
+                report.add("Recibe de parametros: "+ob[4]);
             }
             report.add("");
         }
@@ -126,7 +143,6 @@ public class Report {
                             typeOf = dataType;
                             String[] ignore1 = {accessModifier, typeOf, "="};
                             variableName = ignoreCharSequence(divideEquals[0], ignore1);
-                            System.out.println(variableName);
                             String[] ignore2 = {divideEquals[0], ";", "="};
                             valueAssigned = ignoreCharSequence(fileLines.get(i), ignore2);
                             Object[] attribute = {lineIndexOfVariable, accessModifier, typeOf, variableName, valueAssigned};
@@ -155,10 +171,35 @@ public class Report {
     public ArrayList<Object[]> getClassMethods() {
         ArrayList<Object[]> methods = new ArrayList();
         int lineIndexOfMethod = -1;
-        
+        String accessModifier = "";
+        String returnType = "";
+        String methodName = "";
+        String params = "";
         for (int i = 0; i < fileLines.size(); i++) {
-            if (fileLines.get(i).matches("(\\s)*[a-z]{6,9}(\\s)+[A-za-z]+(\\s)+\\w+(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*")) {
+            if (fileLines.get(i).matches("(\\s)*[a-z]{6,9}(\\s)+[A-za-z]+(\\s)+\\w+(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
                 //metodo validado en cuanto sintaxis
+                lineIndexOfMethod = i;
+                accessModifier = getAccessModifier(fileLines.get(i));
+                int initP = fileLines.get(i).indexOf("(");
+                int initF = fileLines.get(i).indexOf(")");
+                params = "";
+                String rest = "";
+                for (int j = initP; j <= initF; j++) {
+                    params += fileLines.get(i).charAt(j);
+                }
+                for (int j = initF+1; j < fileLines.get(i).length(); j++) {
+                    rest += fileLines.get(i).charAt(j);
+                }
+                if(params.length()>2){
+                    String[] divide = fileLines.get(i).split(params);
+                    returnType = getDataType(divide[0]);   
+                }else{
+                    returnType = getDataType(fileLines.get(i));
+                }
+                String[] ignore = {accessModifier, returnType, params,rest,"{","}"};
+                methodName = ignoreCharSequence(fileLines.get(i),ignore);
+                Object[] method = {lineIndexOfMethod,accessModifier,returnType,methodName,params};
+                methods.add(method);
             }
         }
         return methods;
@@ -182,6 +223,17 @@ public class Report {
         for (String modifier : Constants.ACCESSMODIFIERS) {
             if (line.contains(modifier)) {
                 res = modifier;
+                break;
+            }
+        }
+        return res;
+    }
+    
+    public String getDataType(String line){
+        String res = "";
+        for(String dataType: Constants.DATATYPES){
+            if(line.contains(dataType)){
+                res = dataType;
                 break;
             }
         }
