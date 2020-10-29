@@ -24,6 +24,7 @@ public class Report {
         this.file = file;
         this.txtFile = txtFile;
         this.tokens = tokens;
+        this.fileLines = txtFile.getLines();
     }
     
     public Report(File file, Txt txtFile){
@@ -37,7 +38,7 @@ public class Report {
         int lineCount = 0;
         for(String line: fileLines){
             if(line.contains("class")){
-                String[] words = line.split(" ");
+                String[] words = line.split("class");
                 String className = getWord(words[1]);
                 int lastLine = indexOfLastToken("}");
                 report.add("En la linea "+lineCount+" se instancia una clase de nombre: "+className);
@@ -67,14 +68,16 @@ public class Report {
     
     public String getWord(String w){
         String word = "";
-        if(w.indexOf("{") == -1){
-            return w;
-        }else{
-            for(int i=0; i<w.length()-1; i++){
-                word += w.charAt(i);
+        for (int i = 0; i < w.length(); i++) {
+            if(w.charAt(i) != ' '  && w.charAt(i) != '{'){
+                word+=w.charAt(i);
             }
-            return word;
         }
+        return word;
+    }
+    
+    public int indexOfWord(String[] words){
+      return 0;
     }
     
     public int indexOfLastToken(String token){

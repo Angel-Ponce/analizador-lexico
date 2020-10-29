@@ -266,20 +266,12 @@ public class Analizador extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddTokenActionPerformed
 
     private void buttonViewReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewReportActionPerformed
-//        ArrayList<String> lines = txtTokens.getLines();
-//        String[] tokens = new String[lines.size() - 1];
-//        int i = 0;
-//        for(String s: lines){
-//           tokens[i] = s;
-//            i++;
-//        }
         if(this.file != null){
             ArrayList<String> t = txtTokens.getLines();
             String[] tokens = new String[t.size()];
             for(String s: t){
                 tokens[t.indexOf(s)] = s;
             }
-            
             console.setText("");
             Report report = new Report(this.file, this.txtFile,tokens);
             ArrayList<String> r = report.getReport();
