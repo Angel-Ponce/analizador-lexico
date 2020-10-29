@@ -37,8 +37,7 @@ public class Report {
     public ArrayList<String> getReport() {
         report.clear();
         report.add("La clase de nombre "+getClassData().get(2).toString()+" se declaro en la linea "+getClassData().get(0).toString());
-        report.add("El modificador de accesso de la clase "+getClassData().get(2).toString()+" es "+getClassData().get(1).toString());
-        
+        report.add("El modificador de accesso de la clase "+getClassData().get(2).toString()+" es "+getClassData().get(1).toString() + "\n");
         return report;
     }
 
@@ -63,6 +62,17 @@ public class Report {
         data.add(className);
 
         return data;
+    }
+    
+    public ArrayList<Object> getClassPropertiesData(){
+        
+        for(String dataType : Constants.DATATYPES){
+            for (int i = 0; i<fileLines.size(); i++) {
+                if(fileLines.get(i).contains(dataType)){
+                    
+                }
+            }
+        }
     }
 
     public String ignoreCharSequence(String w, String[] ignore) {
