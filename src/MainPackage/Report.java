@@ -37,16 +37,37 @@ public class Report {
     public ArrayList<String> getReport() {
         report.clear();
         //Class
-        report.add("La clase de nombre "+getClassData().get(2).toString()+" se declaro en la linea "+getClassData().get(0).toString());
-        report.add("El modificador de accesso de la clase "+getClassData().get(2).toString()+" es "+getClassData().get(1).toString() + "\n");
-        //Atributes
+        report.add("La clase de nombre " + getClassData().get(2).toString() + " se declaro en la linea " + getClassData().get(0).toString());
+        report.add("El modificador de accesso de la clase " + getClassData().get(2).toString() + " es " + getClassData().get(1).toString() + "\n");
+
+        //Attributes
         ArrayList<Object[]> properties = getClassPropertiesData();
         for (int i = 0; i < properties.size(); i++) {
-            Object[] atribute = properties.get(i);
-            report.add("En la linea "+atribute[0]+" se declaro un atributo de tipo: "+atribute[2]+"\n");
-            report.add("Su modificador de acceso es: "+atribute[1]+"\n");
-            report.add("El nombre del atributo es: "+atribute[3]+"\n");
-            report.add("El valor de asignación es: "+atribute[4]+"\n----------------------------------------------------------");
+            Object[] attribute = properties.get(i);
+            report.add("En la linea " + attribute[0] + " se declaro un atributo de tipo: " + attribute[2]);
+            report.add("Su modificador de acceso es: " + attribute[1]);
+
+            if (attribute[3].toString().matches("^[A-Za-z]\\w*")) {
+                // Es un nombre de variable valida
+                report.add("El nombre del atributo es: " + attribute[3]);
+            } else {
+                report.add("El nombre del atributo en la linea " + attribute[0] + " no es valido.");
+            }
+
+            if (!attribute[4].equals("Sin valor asignado")) {
+
+                if (attribute[4].toString().contains("(") && !attribute[4].toString().contains("new")) {
+                    report.add("Se le asigno el metodo: " + attribute[4]);
+                } else if (attribute[4].toString().contains("new")) {
+                    
+                    report.add("Se instancio un nuevo objeto de tipo: " + attribute[4].toString().replace("new", ""));
+                    
+                } else {
+                    report.add("El valor de asignación es: " + attribute[4]);
+                }
+
+            }
+            report.add("");
         }
         return report;
     }
@@ -73,52 +94,53 @@ public class Report {
 
         return data;
     }
-    
-    public ArrayList<Object[]> getClassPropertiesData(){
+
+    public ArrayList<Object[]> getClassPropertiesData() {
         ArrayList<Object[]> properties = new ArrayList();
         int lineIndexOfVariable = -1;
         String accessModifier = "";
         String typeOf = "";
         String variableName = "";
         String valueAssigned = "";
-        for(String dataType : Constants.DATATYPES){
-            for (int i = 0; i<fileLines.size(); i++) {
-                if(fileLines.get(i).contains(dataType) && fileLines.get(i).contains(";")){
+        for (String dataType : Constants.DATATYPES) {
+            for (int i = 0; i < fileLines.size(); i++) {
+                if (fileLines.get(i).contains(dataType) && fileLines.get(i).contains(";")) {
                     //Tenemos que validar que la nomenclatura de la declaración del objeto sea correcta
-                    if(fileLines.get(i).matches("(\\s)*[a-z]{0,9}(\\s)+"+dataType+"(\\s)*.*;")){
-                        if(fileLines.get(i).contains("=")){
+                    if (fileLines.get(i).matches("(\\s)*[a-z]{0,9}(\\s)+" + dataType + "(\\s)*.*;")) {
+                        if (fileLines.get(i).contains("=")) {
                             //Variable con asignación
-                            String[] divideEquals  = fileLines.get(i).split("=");
+                            String[] divideEquals = fileLines.get(i).split("=");
                             lineIndexOfVariable = i;
                             accessModifier = getAccessModifier(fileLines.get(i));
-                            if(accessModifier.length() == 0){
+                            if (accessModifier.length() == 0) {
                                 accessModifier = "public";
                             }
                             typeOf = dataType;
-                            String[] ignore1 = {accessModifier,typeOf,"=",divideEquals[1]};
-                            variableName = ignoreCharSequence(fileLines.get(i),ignore1);
-                            String[] ignore2 = {divideEquals[0],";","="};
-                            valueAssigned = ignoreCharSequence(fileLines.get(i),ignore2);
-                            Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
-                            properties.add(atribute);
-                        }else{
+                            String[] ignore1 = {accessModifier, typeOf, "="};
+                            variableName = ignoreCharSequence(divideEquals[0], ignore1);
+                            System.out.println(variableName);
+                            String[] ignore2 = {divideEquals[0], ";", "="};
+                            valueAssigned = ignoreCharSequence(fileLines.get(i), ignore2);
+                            Object[] attribute = {lineIndexOfVariable, accessModifier, typeOf, variableName, valueAssigned};
+                            properties.add(attribute);
+                        } else {
                             //Variable sin asignación
                             lineIndexOfVariable = i;
                             accessModifier = getAccessModifier(fileLines.get(i));
-                            if(accessModifier.length() == 0){
+                            if (accessModifier.length() == 0) {
                                 accessModifier = "public";
                             }
                             typeOf = dataType;
-                            String[] ignore1 = {accessModifier,typeOf,";"};
-                            variableName = ignoreCharSequence(fileLines.get(i),ignore1);
+                            String[] ignore1 = {accessModifier, typeOf, ";"};
+                            variableName = ignoreCharSequence(fileLines.get(i), ignore1);
                             valueAssigned = "Sin valor asignado";
-                            Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
-                            properties.add(atribute);
+                            Object[] attribute = {lineIndexOfVariable, accessModifier, typeOf, variableName, valueAssigned};
+                            properties.add(attribute);
                         }
                     }
                 }
             }
-        }  
+        }
         return properties;
     }
 
@@ -128,17 +150,17 @@ public class Report {
             w = w.replace(wordToReplace, " ");
         }
         for (int i = 0; i < w.length(); i++) {
-            if(w.charAt(i) != ' '){
+            if (w.charAt(i) != ' ') {
                 word += w.charAt(i);
             }
         }
         return word;
     }
-    
-    public String getAccessModifier(String line){
+
+    public String getAccessModifier(String line) {
         String res = "";
-        for(String modifier: Constants.ACCESSMODIFIERS){
-            if(line.contains(modifier)){
+        for (String modifier : Constants.ACCESSMODIFIERS) {
+            if (line.contains(modifier)) {
                 res = modifier;
                 break;
             }
