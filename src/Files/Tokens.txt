@@ -28,7 +28,6 @@ int
 interface
 long
 native
-generic
 new
 null
 package

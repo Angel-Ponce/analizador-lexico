@@ -36,8 +36,18 @@ public class Report {
 
     public ArrayList<String> getReport() {
         report.clear();
+        //Class
         report.add("La clase de nombre "+getClassData().get(2).toString()+" se declaro en la linea "+getClassData().get(0).toString());
         report.add("El modificador de accesso de la clase "+getClassData().get(2).toString()+" es "+getClassData().get(1).toString() + "\n");
+        //Atributes
+        ArrayList<Object[]> properties = getClassPropertiesData();
+        for (int i = 0; i < properties.size(); i++) {
+            Object[] atribute = properties.get(i);
+            report.add("En la linea "+atribute[0]+" se declaro un atributo de tipo: "+atribute[2]+"\n");
+            report.add("Su modificador de acceso es: "+atribute[1]+"\n");
+            report.add("El nombre del atributo es: "+atribute[3]+"\n");
+            report.add("El valor de asignación es: "+atribute[4]+"\n----------------------------------------------------------");
+        }
         return report;
     }
 
@@ -64,15 +74,49 @@ public class Report {
         return data;
     }
     
-    public ArrayList<Object> getClassPropertiesData(){
-        
+    public ArrayList<Object[]> getClassPropertiesData(){
+        ArrayList<Object[]> properties = new ArrayList();
+        int lineIndexOfVariable = -1;
+        String accessModifier = "";
+        String typeOf = "";
+        String variableName = "";
+        String valueAssigned = "";
         for(String dataType : Constants.DATATYPES){
             for (int i = 0; i<fileLines.size(); i++) {
-                if(fileLines.get(i).contains(dataType)){
-                    
+                if(fileLines.get(i).contains(dataType) && fileLines.get(i).contains(";")){
+                    if(fileLines.get(i).contains("=")){
+                        //Variable con asignación
+                        String[] divideEquals  = fileLines.get(i).split("=");
+                        lineIndexOfVariable = i;
+                        accessModifier = getAccessModifier(fileLines.get(i));
+                        if(accessModifier.length() == 0){
+                            accessModifier = "public";
+                        }
+                        typeOf = dataType;
+                        String[] ignore1 = {accessModifier,typeOf,"=",divideEquals[1]};
+                        variableName = ignoreCharSequence(fileLines.get(i),ignore1);
+                        String[] ignore2 = {divideEquals[0],";","="};
+                        valueAssigned = ignoreCharSequence(fileLines.get(i),ignore2);
+                        Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
+                        properties.add(atribute);
+                    }else{
+                        //Variable sin asignación
+                        lineIndexOfVariable = i;
+                        accessModifier = getAccessModifier(fileLines.get(i));
+                        if(accessModifier.length() == 0){
+                            accessModifier = "public";
+                        }
+                        typeOf = dataType;
+                        String[] ignore1 = {accessModifier,typeOf,";"};
+                        variableName = ignoreCharSequence(fileLines.get(i),ignore1);
+                        valueAssigned = "Sin valor asignado";
+                        Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
+                        properties.add(atribute);
+                    }
                 }
             }
-        }
+        }  
+        return properties;
     }
 
     public String ignoreCharSequence(String w, String[] ignore) {
@@ -86,6 +130,17 @@ public class Report {
             }
         }
         return word;
+    }
+    
+    public String getAccessModifier(String line){
+        String res = "";
+        for(String modifier: Constants.ACCESSMODIFIERS){
+            if(line.contains(modifier)){
+                res = modifier;
+                break;
+            }
+        }
+        return res;
     }
 
     public ArrayList<String> getMinimalReport() {
