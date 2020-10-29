@@ -84,7 +84,9 @@ public class Report {
         for(String dataType : Constants.DATATYPES){
             for (int i = 0; i<fileLines.size(); i++) {
                 if(fileLines.get(i).contains(dataType) && fileLines.get(i).contains(";")){
-                    if(fileLines.get(i).contains("=")){
+                    //Tenemos que validar que la nomenclatura de la declaración del objeto sea correcta
+                    if(fileLines.get(i).matches("(\\s)*[a-z]{0,9}(\\s)+"+dataType+"(\\s)*.*;")){
+                        if(fileLines.get(i).contains("=")){
                         //Variable con asignación
                         String[] divideEquals  = fileLines.get(i).split("=");
                         lineIndexOfVariable = i;
@@ -112,6 +114,7 @@ public class Report {
                         valueAssigned = "Sin valor asignado";
                         Object[] atribute = {lineIndexOfVariable,accessModifier,typeOf,variableName,valueAssigned};
                         properties.add(atribute);
+                    }
                     }
                 }
             }
