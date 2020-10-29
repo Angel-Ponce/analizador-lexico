@@ -36,10 +36,19 @@ public class Report {
 
     public ArrayList<String> getReport() {
         report.clear();
+        scanClass();
+        scanAttributes();
+        getClassMethods();
+        return report;
+    }
+
+    private void scanClass() {
         //Class
         report.add("La clase de nombre " + getClassData().get(2).toString() + " se declaro en la linea " + getClassData().get(0).toString());
         report.add("El modificador de accesso de la clase " + getClassData().get(2).toString() + " es " + getClassData().get(1).toString() + "\n");
+    }
 
+    private void scanAttributes() {
         //Attributes
         ArrayList<Object[]> properties = getClassPropertiesData();
         for (int i = 0; i < properties.size(); i++) {
@@ -59,9 +68,9 @@ public class Report {
                 if (attribute[4].toString().contains("(") && !attribute[4].toString().contains("new")) {
                     report.add("Se le asigno el metodo: " + attribute[4]);
                 } else if (attribute[4].toString().contains("new")) {
-                    
+
                     report.add("Se instancio un nuevo objeto de tipo: " + attribute[4].toString().replace("new", ""));
-                    
+
                 } else {
                     report.add("El valor de asignación es: " + attribute[4]);
                 }
@@ -69,7 +78,6 @@ public class Report {
             }
             report.add("");
         }
-        return report;
     }
 
     public ArrayList<Object> getClassData() {
@@ -142,6 +150,18 @@ public class Report {
             }
         }
         return properties;
+    }
+
+    public ArrayList<Object[]> getClassMethods() {
+        ArrayList<Object[]> methods = new ArrayList();
+        int lineIndexOfMethod = -1;
+        
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)*[a-z]{6,9}(\\s)+[A-za-z]+(\\s)+\\w+(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*")) {
+                //metodo validado en cuanto sintaxis
+            }
+        }
+        return methods;
     }
 
     public String ignoreCharSequence(String w, String[] ignore) {
