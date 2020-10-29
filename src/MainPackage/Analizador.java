@@ -62,6 +62,7 @@ public class Analizador extends javax.swing.JFrame {
         sidebar.setBackground(new java.awt.Color(206, 240, 255));
 
         buttonOpenFile.setBackground(new java.awt.Color(51, 51, 51));
+        buttonOpenFile.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonOpenFile.setForeground(new java.awt.Color(0, 0, 0));
         buttonOpenFile.setText("Abrir archivo");
         buttonOpenFile.addActionListener(new java.awt.event.ActionListener() {
@@ -71,6 +72,7 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         buttonViewReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonViewReport.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonViewReport.setForeground(new java.awt.Color(0, 0, 0));
         buttonViewReport.setText("Ver reporte");
         buttonViewReport.addActionListener(new java.awt.event.ActionListener() {
@@ -80,10 +82,12 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         buttonSaveReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonSaveReport.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonSaveReport.setForeground(new java.awt.Color(0, 0, 0));
         buttonSaveReport.setText("Guardar reporte");
 
         buttonSeeTokens.setBackground(new java.awt.Color(51, 51, 51));
+        buttonSeeTokens.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonSeeTokens.setForeground(new java.awt.Color(0, 0, 0));
         buttonSeeTokens.setText("Ver tokens");
         buttonSeeTokens.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +97,7 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         buttonAddToken.setBackground(new java.awt.Color(51, 51, 51));
+        buttonAddToken.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonAddToken.setForeground(new java.awt.Color(0, 0, 0));
         buttonAddToken.setText("Agregar token");
         buttonAddToken.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +107,7 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         buttonClearWindow.setBackground(new java.awt.Color(51, 51, 51));
+        buttonClearWindow.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonClearWindow.setForeground(new java.awt.Color(0, 0, 0));
         buttonClearWindow.setText("Limpiar");
         buttonClearWindow.addActionListener(new java.awt.event.ActionListener() {
@@ -123,6 +129,7 @@ public class Analizador extends javax.swing.JFrame {
         });
 
         buttonViewMinimalReport.setBackground(new java.awt.Color(51, 51, 51));
+        buttonViewMinimalReport.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonViewMinimalReport.setForeground(new java.awt.Color(0, 0, 0));
         buttonViewMinimalReport.setText("Ver repote minimo");
         buttonViewMinimalReport.addActionListener(new java.awt.event.ActionListener() {
@@ -169,13 +176,13 @@ public class Analizador extends javax.swing.JFrame {
                 .addComponent(buttonAddToken)
                 .addGap(18, 18, 18)
                 .addComponent(buttonClearWindow)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(buttonGitHub)
                 .addGap(17, 17, 17))
         );
 
         console.setColumns(20);
-        console.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        console.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
         console.setRows(5);
         jScrollPane1.setViewportView(console);
 
@@ -186,7 +193,7 @@ public class Analizador extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(sidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(

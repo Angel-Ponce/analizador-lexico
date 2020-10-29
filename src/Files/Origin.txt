@@ -1,21 +1,30 @@
-class Person {
-   string name;
-   string address;
-   string sex;
-   number age;
+public class Person{
 
-   constructor(string name, string address, string sex, number age){
-      my.name = name;
-      my.address = address;
-      my.sex = sex;
-      my.age = age;
-   }
+    private String name;
+    private int age;
 
-   void fun greet(){
-      print("Hello my name is " + my.name);
-   }
+    public Person(String name, int age){
+        this.name = name;
+        this.age = age;
+    }
 
-   void fun showAge(){
-      print("I am " + my.age + "years old");
-   }
+    public void sayHi(){
+        System.out.println("Hi World");
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String newName){
+        this.name = newName;
+    }
+
+    public int getAge(){
+        return this.age;
+    }
+
+    public void setAge(int newAge){
+        this.age = newAge;
+    }
 }
