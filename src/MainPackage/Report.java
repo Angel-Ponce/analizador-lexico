@@ -44,6 +44,8 @@ public class Report {
         scanAttributes();
         report.add("*---------------------------*Scaneo de metodos*---------------------------*");
         scanMethods();
+        report.add("*---------------------------*Scaneo de Comentarios*---------------------------*");
+        scanCommentsSingleLine();
         return report;
     }
 
@@ -113,6 +115,16 @@ public class Report {
         }
     }
 
+    private void scanCommentsSingleLine(){
+        ArrayList<Object[]> comments = getClassCommentsSingleLine();
+        for (int i = 0; i < comments.size(); i++) {
+            Object[] comment = comments.get(i);
+            report.add("Se commento la linea "+comment[0]);
+            report.add("Comentario: "+comment[1]);
+            report.add("");
+        }
+    }
+    
     public ArrayList<Object> getClassData() {
         int lineIndexOfClassName = -1;
         String className = "";
@@ -248,6 +260,22 @@ public class Report {
         return methods;
     }
 
+    public ArrayList<Object[]> getClassCommentsSingleLine(){
+        ArrayList<Object[]> comments = new ArrayList();
+        int lineIndexOfComment = -1;
+        String comment = "";
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)+\\/\\/(.)*")) {
+                //Cumple la expresión regular de un comentario de una sola linea
+                lineIndexOfComment = i+1;
+                comment = fileLines.get(i).replace("//", "");
+                Object[] com = {lineIndexOfComment,comment};
+                comments.add(com);
+            }
+        }
+        return comments;
+    }
+    
     public String ignoreCharSequence(String w, String[] ignore) {
         String word = "";
         for (String wordToReplace : ignore) {
@@ -290,7 +318,7 @@ public class Report {
         for (String line : txtFile.getLines()) {
             for (String t : tokens) {
                 if (line.contains(t)) {
-                    minimalReport.add("Se encontro el token\t\"" + t + "\"\ten la linea: " + lineCount + " en la posición: " + (line.indexOf(t) + 1));
+                    minimalReport.add("Se encontro el token\t\"" + t + "\"\ten la linea: " +( lineCount + 1)+ " en la posición: " + (line.indexOf(t) + 1));
                 }
             }
             lineCount++;
