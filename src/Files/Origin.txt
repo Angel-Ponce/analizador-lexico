@@ -33,4 +33,9 @@ public class Person{
         this.age = newAge;
     }
 
+    private boolean exist(){return false}
+
+    protected short numShort(){
+	return 1;
+    }
 }

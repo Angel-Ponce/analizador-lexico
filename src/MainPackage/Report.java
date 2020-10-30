@@ -38,6 +38,8 @@ public class Report {
         report.clear();
         report.add("*---------------------------*Scaneo de clase*---------------------------*");
         scanClass();
+        report.add("*---------------------------*Scaneo de constructores*---------------------------*");
+        scanConstructors();
         report.add("*---------------------------*Scaneo de atributos*---------------------------*");
         scanAttributes();
         report.add("*---------------------------*Scaneo de metodos*---------------------------*");
@@ -78,6 +80,18 @@ public class Report {
                     report.add("El valor de asignación es: " + attribute[4]);
                 }
 
+            }
+            report.add("");
+        }
+    }
+    
+    private void scanConstructors(){
+        ArrayList<Object[]> constructors = getClassConstructors();
+        for (int i = 0; i < constructors.size(); i++) {
+            Object[] constructor = constructors.get(i);
+            report.add("Se declaro un constructor de la clase "+constructor[2]+" en la linea "+constructor[0]);
+            if(constructor[1].toString().length()>2){
+                report.add("Recibe de parámetros: "+constructor[1]);
             }
             report.add("");
         }
@@ -168,6 +182,29 @@ public class Report {
         return properties;
     }
 
+     public ArrayList<Object[]> getClassConstructors(){
+        ArrayList<Object[]> constructors = new ArrayList();
+        String className = getClassData().get(2).toString();
+        int lineIndexOfConstructor = -1;
+        String params = "";
+         for (int i = 0; i < fileLines.size(); i++) {
+             if (fileLines.get(i).matches("(\\s)*public(\\s)+"+className+"(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
+                //Cumple con la expresión regular de un constructor
+                lineIndexOfConstructor = i;
+                int initP = fileLines.get(i).indexOf("(");
+                int initF = fileLines.get(i).indexOf(")");
+                params = "";
+                 for (int j = initP; j <= initF; j++) {
+                     params += fileLines.get(i).charAt(j);
+                 }
+                 Object[] constructor = {lineIndexOfConstructor,params,className};
+                 constructors.add(constructor);
+             }
+         }
+        
+        return constructors;
+    }
+    
     public ArrayList<Object[]> getClassMethods() {
         ArrayList<Object[]> methods = new ArrayList();
         int lineIndexOfMethod = -1;
