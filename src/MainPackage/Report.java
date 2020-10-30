@@ -93,6 +93,7 @@ public class Report {
             if(constructor[1].toString().length()>2){
                 report.add("Recibe de parámetros: "+constructor[1]);
             }
+            report.add("El método finaliza en la linea "+constructor[3]);
             report.add("");
         }
     }
@@ -101,12 +102,13 @@ public class Report {
         ArrayList<Object[]> methods = getClassMethods();
         for (int i = 0; i < methods.size(); i++) {
             Object[] ob = methods.get(i);
-            report.add("Se declaro un metodo de nombre "+ob[3]+" en la posicion "+ob[0]);
+            report.add("Se declaro un metodo de nombre "+ob[3]+" en la linea "+ob[0]);
             report.add("El tipo de retorno es: "+ob[2]);
             report.add("Su modificador de acceso es: "+ob[1]);
             if(ob[4].toString().length() > 2){
                 report.add("Recibe de parametros: "+ob[4]);
             }
+            report.add("El método finaliza en la linea "+ob[5]);
             report.add("");
         }
     }
@@ -120,7 +122,7 @@ public class Report {
 
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).contains("class")) {
-                lineIndexOfClassName = i;
+                lineIndexOfClassName = i+1;
 
                 String[] ignoreThis = {"public", "class", "{"};
                 className = ignoreCharSequence(fileLines.get(i), ignoreThis);
@@ -149,7 +151,7 @@ public class Report {
                         if (fileLines.get(i).contains("=")) {
                             //Variable con asignación
                             String[] divideEquals = fileLines.get(i).split("=");
-                            lineIndexOfVariable = i;
+                            lineIndexOfVariable = i+1;
                             accessModifier = getAccessModifier(fileLines.get(i));
                             if (accessModifier.length() == 0) {
                                 accessModifier = "public";
@@ -163,7 +165,7 @@ public class Report {
                             properties.add(attribute);
                         } else {
                             //Variable sin asignación
-                            lineIndexOfVariable = i;
+                            lineIndexOfVariable = i+1;
                             accessModifier = getAccessModifier(fileLines.get(i));
                             if (accessModifier.length() == 0) {
                                 accessModifier = "public";
@@ -187,17 +189,19 @@ public class Report {
         String className = getClassData().get(2).toString();
         int lineIndexOfConstructor = -1;
         String params = "";
+        int limit = -1;
          for (int i = 0; i < fileLines.size(); i++) {
              if (fileLines.get(i).matches("(\\s)*public(\\s)+"+className+"(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
                 //Cumple con la expresión regular de un constructor
-                lineIndexOfConstructor = i;
+                lineIndexOfConstructor = i+1;
                 int initP = fileLines.get(i).indexOf("(");
                 int initF = fileLines.get(i).indexOf(")");
                 params = "";
                  for (int j = initP; j <= initF; j++) {
                      params += fileLines.get(i).charAt(j);
                  }
-                 Object[] constructor = {lineIndexOfConstructor,params,className};
+                 limit = getLastLineKey(i)+1;
+                 Object[] constructor = {lineIndexOfConstructor,params,className,limit};
                  constructors.add(constructor);
              }
          }
@@ -212,10 +216,11 @@ public class Report {
         String returnType = "";
         String methodName = "";
         String params = "";
+        int limit = -1;
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).matches("(\\s)*[a-z]{6,9}(\\s)+[A-za-z]+(\\s)+\\w+(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
                 //metodo validado en cuanto sintaxis
-                lineIndexOfMethod = i;
+                lineIndexOfMethod = i+1;
                 accessModifier = getAccessModifier(fileLines.get(i));
                 int initP = fileLines.get(i).indexOf("(");
                 int initF = fileLines.get(i).indexOf(")");
@@ -233,9 +238,10 @@ public class Report {
                 }else{
                     returnType = getDataType(fileLines.get(i));
                 }
+                limit = getLastLineKey(i)+1;
                 String[] ignore = {accessModifier, returnType, params,rest,"{","}"};
                 methodName = ignoreCharSequence(fileLines.get(i),ignore);
-                Object[] method = {lineIndexOfMethod,accessModifier,returnType,methodName,params};
+                Object[] method = {lineIndexOfMethod,accessModifier,returnType,methodName,params,limit};
                 methods.add(method);
             }
         }
@@ -292,6 +298,27 @@ public class Report {
         return minimalReport;
     }
 
+    public int getLastLineKey(int init){
+        int res = -1;
+        int keysOpened = 0;
+        int keysClosed = 0;
+        for (int i = init; i < fileLines.size(); i++) {
+            char[] chars = fileLines.get(i).toCharArray();
+            for (int j = 0; j < chars.length; j++) {
+                if(chars[j] == '{'){
+                    keysOpened++;
+                }else if(chars[j] == '}'){
+                    keysClosed++;
+                }
+            }
+            if(keysOpened == keysClosed){
+                res = i;
+                break;
+            }
+        }
+        return res;
+    }
+    
     public void setTokens(String[] t) {
         this.tokens = t;
     }

@@ -13,6 +13,8 @@ public class Person{
         this.age = age;
     }
 
+    public Person(){}
+
     public void sayHi(){
         System.out.println("Hi World");
     }
