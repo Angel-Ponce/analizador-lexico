@@ -38,7 +38,6 @@ public class Report {
         report.clear();
         report.add("*---------------------------*Scaneo de Comentarios*---------------------------*");
         scanCommentsMultipleLine();
-        fileLines.forEach((String s)->  System.out.println(s)  );
         scanCommentsSingleLine();
         report.add("*---------------------------*Scaneo de clase*---------------------------*");
         scanClass();
@@ -121,7 +120,7 @@ public class Report {
         ArrayList<Object[]> comments = getClassCommentsSingleLine();
         for (int i = 0; i < comments.size(); i++) {
             Object[] comment = comments.get(i);
-            report.add("Se commento la linea "+comment[0]);
+            report.add("Se encontro un comentario de una sola linea en la linea "+comment[0]);
             report.add("Comentario: "+comment[1]);
             report.add("");
         }
