@@ -38,6 +38,7 @@ public class Report {
         report.clear();
         report.add("*---------------------------*Scaneo de Comentarios*---------------------------*");
         scanCommentsMultipleLine();
+        fileLines.forEach((String s)->  System.out.println(s)  );
         scanCommentsSingleLine();
         report.add("*---------------------------*Scaneo de clase*---------------------------*");
         scanClass();
@@ -136,7 +137,7 @@ public class Report {
                 report.add(s.toString()+"\n");
             }
             report.add("");
-            for (int j = ((Integer)comment[0]-1); j < ((Integer)comment[1]); j++) {
+            for (int j = ((Integer)comment[0]-1); j <= ((Integer)comment[1]); j++) {
                 fileLines.set(j, "");
             }
         }
