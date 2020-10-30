@@ -12,7 +12,11 @@ public class Person{
         this.name = name;
         this.age = age;
     }
-
+    /*Este es un comentario de varias lineas
+      se puede escribir lo que sea en el
+    */
+    
+    //Comentario de una sola linea
     public Person(){}
 
     public void sayHi(){
@@ -38,6 +42,6 @@ public class Person{
     private boolean exist(){return false}
 
     protected short numShort(){
-	return 1;
+    	return 1;
     }
 }

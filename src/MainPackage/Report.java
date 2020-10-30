@@ -36,6 +36,9 @@ public class Report {
 
     public ArrayList<String> getReport() {
         report.clear();
+        report.add("*---------------------------*Scaneo de Comentarios*---------------------------*");
+        scanCommentsMultipleLine();
+        scanCommentsSingleLine();
         report.add("*---------------------------*Scaneo de clase*---------------------------*");
         scanClass();
         report.add("*---------------------------*Scaneo de constructores*---------------------------*");
@@ -44,8 +47,6 @@ public class Report {
         scanAttributes();
         report.add("*---------------------------*Scaneo de metodos*---------------------------*");
         scanMethods();
-        report.add("*---------------------------*Scaneo de Comentarios*---------------------------*");
-        scanCommentsSingleLine();
         return report;
     }
 
@@ -122,6 +123,22 @@ public class Report {
             report.add("Se commento la linea "+comment[0]);
             report.add("Comentario: "+comment[1]);
             report.add("");
+        }
+    }
+    
+    private void scanCommentsMultipleLine(){
+        ArrayList<Object[]> comments = getClassCommentsMultipleLine();
+        for (int i = 0; i < comments.size(); i++) {
+            Object[] comment = comments.get(i);
+            report.add("Se econtro un comentario multi-linea que inicia en la linea "+comment[0]+" y finaliza en la linea "+((Integer)comment[1]+1));
+            report.add("Contenido del comentario: ");
+            for(Object s: (ArrayList) comment[2]){
+                report.add(s.toString()+"\n");
+            }
+            report.add("");
+            for (int j = ((Integer)comment[0]-1); j < ((Integer)comment[1]); j++) {
+                fileLines.set(j, "");
+            }
         }
     }
     
@@ -276,6 +293,26 @@ public class Report {
         return comments;
     }
     
+    public ArrayList<Object[]> getClassCommentsMultipleLine(){
+        ArrayList<Object[]> comments = new ArrayList();
+        int lineIndexOfInit = -1;
+        int lineIndexOfEnd = -1;
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)*(\\/\\*)(.)*")) {
+                //Cumple con la expresión regular de un comentario multilineas.
+                ArrayList<String> commentedLines = new ArrayList();
+                lineIndexOfInit = i+1;
+                lineIndexOfEnd = getLastLineCharSequence(lineIndexOfInit-1,"*/");
+                for (int j = lineIndexOfInit-1; j <= lineIndexOfEnd; j++) {
+                    commentedLines.add(fileLines.get(j));
+                }
+                Object[] comment = {lineIndexOfInit,lineIndexOfEnd,commentedLines};
+                comments.add(comment);
+            }
+        }
+        return comments;
+    }
+    
     public String ignoreCharSequence(String w, String[] ignore) {
         String word = "";
         for (String wordToReplace : ignore) {
@@ -340,6 +377,17 @@ public class Report {
                 }
             }
             if(keysOpened == keysClosed){
+                res = i;
+                break;
+            }
+        }
+        return res;
+    }
+    
+    public int getLastLineCharSequence(int init,String charSequence){
+        int res = -1;
+        for (int i = init; i < fileLines.size(); i++) {
+            if (fileLines.get(i).contains(charSequence)) {
                 res = i;
                 break;
             }
