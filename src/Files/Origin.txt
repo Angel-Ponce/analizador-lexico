@@ -14,9 +14,11 @@ public class Person{
     }
     /*Este es un comentario de varias lineas
       se puede escribir lo que sea en el
+      //Comentario de una sola linea
     */
     
-    //Comentario de una sola linea
+    ///Comentario triple =D
+    
     public Person(){}
 
     public void sayHi(){
