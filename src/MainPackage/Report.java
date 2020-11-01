@@ -49,6 +49,7 @@ public class Report {
         scanMethods();
         report.add("*---------------------------*Scaneo de Sentencias if*---------------------------*");
         scanIfSentences();
+        scanElifSentences();
         return report;
     }
 
@@ -89,72 +90,83 @@ public class Report {
             report.add("");
         }
     }
-    
-    private void scanConstructors(){
+
+    private void scanConstructors() {
         ArrayList<Object[]> constructors = getClassConstructors();
         for (int i = 0; i < constructors.size(); i++) {
             Object[] constructor = constructors.get(i);
-            report.add("Se declaro un constructor de la clase "+constructor[2]+" en la linea "+constructor[0]);
-            if(constructor[1].toString().length()>2){
-                report.add("Recibe de parámetros: "+constructor[1]);
+            report.add("Se declaro un constructor de la clase " + constructor[2] + " en la linea " + constructor[0]);
+            if (constructor[1].toString().length() > 2) {
+                report.add("Recibe de parámetros: " + constructor[1]);
             }
-            report.add("El método finaliza en la linea "+constructor[3]);
-            report.add("");
-        }
-    }
-    
-    private void scanMethods(){
-        ArrayList<Object[]> methods = getClassMethods();
-        for (int i = 0; i < methods.size(); i++) {
-            Object[] ob = methods.get(i);
-            report.add("Se declaro un metodo de nombre "+ob[3]+" en la linea "+ob[0]);
-            report.add("El tipo de retorno es: "+ob[2]);
-            report.add("Su modificador de acceso es: "+ob[1]);
-            if(ob[4].toString().length() > 2){
-                report.add("Recibe de parametros: "+ob[4]);
-            }
-            report.add("El método finaliza en la linea "+ob[5]);
+            report.add("El método finaliza en la linea " + constructor[3]);
             report.add("");
         }
     }
 
-    private void scanCommentsSingleLine(){
-        ArrayList<Object[]> comments = getClassCommentsSingleLine();
-        for (int i = 0; i < comments.size(); i++) {
-            Object[] comment = comments.get(i);
-            report.add("Se encontro un comentario de una sola linea en la linea "+comment[0]);
-            report.add("Comentario: "+comment[1]);
+    private void scanMethods() {
+        ArrayList<Object[]> methods = getClassMethods();
+        for (int i = 0; i < methods.size(); i++) {
+            Object[] ob = methods.get(i);
+            report.add("Se declaro un metodo de nombre " + ob[3] + " en la linea " + ob[0]);
+            report.add("El tipo de retorno es: " + ob[2]);
+            report.add("Su modificador de acceso es: " + ob[1]);
+            if (ob[4].toString().length() > 2) {
+                report.add("Recibe de parametros: " + ob[4]);
+            }
+            report.add("El método finaliza en la linea " + ob[5]);
             report.add("");
         }
     }
-    
-    private void scanCommentsMultipleLine(){
+
+    private void scanCommentsSingleLine() {
+        ArrayList<Object[]> comments = getClassCommentsSingleLine();
+        for (int i = 0; i < comments.size(); i++) {
+            Object[] comment = comments.get(i);
+            report.add("Se encontro un comentario de una sola linea en la linea " + comment[0]);
+            report.add("Comentario: " + comment[1]);
+            report.add("");
+        }
+    }
+
+    private void scanCommentsMultipleLine() {
         ArrayList<Object[]> comments = getClassCommentsMultipleLine();
         for (int i = 0; i < comments.size(); i++) {
             Object[] comment = comments.get(i);
-            report.add("Se econtro un comentario multi-linea que inicia en la linea "+comment[0]+" y finaliza en la linea "+((Integer)comment[1]+1));
+            report.add("Se econtro un comentario multi-linea que inicia en la linea " + comment[0] + " y finaliza en la linea " + ((Integer) comment[1] + 1));
             report.add("Contenido del comentario: ");
-            for(Object s: (ArrayList) comment[2]){
+            for (Object s : (ArrayList) comment[2]) {
                 report.add(s.toString());
             }
             report.add("");
-            for (int j = ((Integer)comment[0]-1); j <= ((Integer)comment[1]); j++) {
+            for (int j = ((Integer) comment[0] - 1); j <= ((Integer) comment[1]); j++) {
                 fileLines.set(j, "");
             }
         }
     }
-    
-    private void scanIfSentences(){
+
+    private void scanIfSentences() {
         ArrayList<Object[]> sentences = getClassIfSentences();
         for (int i = 0; i < sentences.size(); i++) {
             Object[] sentence = sentences.get(i);
-            report.add("Se encontro una sentencia lógica tipo if en la linea "+sentence[0]);
-            report.add("La sentencia lógica de validación es: "+sentence[2]);
-            report.add("La sentencia finaliza en la linea: "+sentence[1]);
+            report.add("Se encontro una sentencia lógica tipo if en la linea " + sentence[0]);
+            report.add("La sentencia lógica de validación es: " + sentence[2]);
+            report.add("La sentencia finaliza en la linea: " + sentence[1]);
             report.add("");
         }
     }
-    
+
+    private void scanElifSentences() {
+        ArrayList<Object[]> sentences = getClassElifSentences();
+        for (int i = 0; i < sentences.size(); i++) {
+            Object[] sentence = sentences.get(i);
+            report.add("Se encontro una sentencia lógica tipo else if en la linea " + sentence[0]);
+            report.add("La sentencia lógica de validación es: " + sentence[2]);
+            report.add("La sentencia finaliza en la linea: " + sentence[1]);
+            report.add("");
+        }
+    }
+
     public ArrayList<Object> getClassData() {
         int lineIndexOfClassName = -1;
         String className = "";
@@ -164,7 +176,7 @@ public class Report {
 
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).contains("class")) {
-                lineIndexOfClassName = i+1;
+                lineIndexOfClassName = i + 1;
 
                 String[] ignoreThis = {"public", "class", "{"};
                 className = ignoreCharSequence(fileLines.get(i), ignoreThis);
@@ -193,7 +205,7 @@ public class Report {
                         if (fileLines.get(i).contains("=")) {
                             //Variable con asignación
                             String[] divideEquals = fileLines.get(i).split("=");
-                            lineIndexOfVariable = i+1;
+                            lineIndexOfVariable = i + 1;
                             accessModifier = getAccessModifier(fileLines.get(i));
                             if (accessModifier.length() == 0) {
                                 accessModifier = "public";
@@ -207,7 +219,7 @@ public class Report {
                             properties.add(attribute);
                         } else {
                             //Variable sin asignación
-                            lineIndexOfVariable = i+1;
+                            lineIndexOfVariable = i + 1;
                             accessModifier = getAccessModifier(fileLines.get(i));
                             if (accessModifier.length() == 0) {
                                 accessModifier = "public";
@@ -226,31 +238,35 @@ public class Report {
         return properties;
     }
 
-     public ArrayList<Object[]> getClassConstructors(){
+    public ArrayList<Object[]> getClassConstructors() {
         ArrayList<Object[]> constructors = new ArrayList();
         String className = getClassData().get(2).toString();
         int lineIndexOfConstructor = -1;
         String params = "";
         int limit = -1;
-         for (int i = 0; i < fileLines.size(); i++) {
-             if (fileLines.get(i).matches("(\\s)*public(\\s)+"+className+"(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)*public(\\s)+" + className + "(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
                 //Cumple con la expresión regular de un constructor
-                lineIndexOfConstructor = i+1;
+                lineIndexOfConstructor = i + 1;
                 int initP = fileLines.get(i).indexOf("(");
                 int initF = fileLines.get(i).indexOf(")");
                 params = "";
-                 for (int j = initP; j <= initF; j++) {
-                     params += fileLines.get(i).charAt(j);
-                 }
-                 limit = getLastLineKey(i)+1;
-                 Object[] constructor = {lineIndexOfConstructor,params,className,limit};
-                 constructors.add(constructor);
-             }
-         }
-        
+                for (int j = initP; j <= initF; j++) {
+                    params += fileLines.get(i).charAt(j);
+                }
+                int ind = 0;
+                if(fileLines.get(i).indexOf("{") != -1){
+                    ind = fileLines.get(i).indexOf("{");
+                }
+                limit = getLastLineKey(i,ind) + 1;
+                Object[] constructor = {lineIndexOfConstructor, params, className, limit};
+                constructors.add(constructor);
+            }
+        }
+
         return constructors;
     }
-    
+
     public ArrayList<Object[]> getClassMethods() {
         ArrayList<Object[]> methods = new ArrayList();
         int lineIndexOfMethod = -1;
@@ -262,7 +278,7 @@ public class Report {
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).matches("(\\s)*[a-z]{6,9}(\\s)+[A-za-z]+(\\s)+\\w+(\\s)*(\\()(\\s)*((\\w)*(\\s)+(\\w)*(\\s)*(,)?(\\s)*)*(\\s)*(\\))(\\s)*(\\{)?(\\s)*(.)*(\\s)*(\\})?(\\s)*")) {
                 //metodo validado en cuanto sintaxis
-                lineIndexOfMethod = i+1;
+                lineIndexOfMethod = i + 1;
                 accessModifier = getAccessModifier(fileLines.get(i));
                 int initP = fileLines.get(i).indexOf("(");
                 int initF = fileLines.get(i).indexOf(")");
@@ -271,42 +287,46 @@ public class Report {
                 for (int j = initP; j <= initF; j++) {
                     params += fileLines.get(i).charAt(j);
                 }
-                for (int j = initF+1; j < fileLines.get(i).length(); j++) {
+                for (int j = initF + 1; j < fileLines.get(i).length(); j++) {
                     rest += fileLines.get(i).charAt(j);
                 }
-                if(params.length()>2){
+                if (params.length() > 2) {
                     String[] divide = fileLines.get(i).split(params);
-                    returnType = getDataType(divide[0]);   
-                }else{
+                    returnType = getDataType(divide[0]);
+                } else {
                     returnType = getDataType(fileLines.get(i));
                 }
-                limit = getLastLineKey(i)+1;
-                String[] ignore = {accessModifier, returnType, params,rest,"{","}"};
-                methodName = ignoreCharSequence(fileLines.get(i),ignore);
-                Object[] method = {lineIndexOfMethod,accessModifier,returnType,methodName,params,limit};
+                int ind = 0;
+                if(fileLines.get(i).indexOf("{") != -1){
+                    ind = fileLines.get(i).indexOf("{");
+                }
+                limit = getLastLineKey(i,ind) + 1;
+                String[] ignore = {accessModifier, returnType, params, rest, "{", "}"};
+                methodName = ignoreCharSequence(fileLines.get(i), ignore);
+                Object[] method = {lineIndexOfMethod, accessModifier, returnType, methodName, params, limit};
                 methods.add(method);
             }
         }
         return methods;
     }
 
-    public ArrayList<Object[]> getClassCommentsSingleLine(){
+    public ArrayList<Object[]> getClassCommentsSingleLine() {
         ArrayList<Object[]> comments = new ArrayList();
         int lineIndexOfComment = -1;
         String comment = "";
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).matches("(\\s)+\\/\\/(.)*")) {
                 //Cumple la expresión regular de un comentario de una sola linea
-                lineIndexOfComment = i+1;
+                lineIndexOfComment = i + 1;
                 comment = fileLines.get(i).replace("//", "");
-                Object[] com = {lineIndexOfComment,comment};
+                Object[] com = {lineIndexOfComment, comment};
                 comments.add(com);
             }
         }
         return comments;
     }
-    
-    public ArrayList<Object[]> getClassCommentsMultipleLine(){
+
+    public ArrayList<Object[]> getClassCommentsMultipleLine() {
         ArrayList<Object[]> comments = new ArrayList();
         int lineIndexOfInit = -1;
         int lineIndexOfEnd = -1;
@@ -314,56 +334,103 @@ public class Report {
             if (fileLines.get(i).matches("(\\s)*(\\/\\*)(.)*")) {
                 //Cumple con la expresión regular de un comentario multilineas.
                 ArrayList<String> commentedLines = new ArrayList();
-                lineIndexOfInit = i+1;
-                lineIndexOfEnd = getLastLineCharSequence(lineIndexOfInit-1,"*/");
-                for (int j = lineIndexOfInit-1; j <= lineIndexOfEnd; j++) {
+                lineIndexOfInit = i + 1;
+                lineIndexOfEnd = getLastLineCharSequence(lineIndexOfInit - 1, "*/");
+                for (int j = lineIndexOfInit - 1; j <= lineIndexOfEnd; j++) {
                     commentedLines.add(fileLines.get(j));
                 }
-                Object[] comment = {lineIndexOfInit,lineIndexOfEnd,commentedLines};
+                Object[] comment = {lineIndexOfInit, lineIndexOfEnd, commentedLines};
                 comments.add(comment);
             }
         }
         return comments;
     }
-    
-    public ArrayList<Object[]> getClassIfSentences(){
+
+    public ArrayList<Object[]> getClassIfSentences() {
         ArrayList<Object[]> sentences = new ArrayList();
         int lineIndexOfIf = -1;
         int lineEndOfIf = -1;
         String sentence = "";
         for (int i = 0; i < fileLines.size(); i++) {
-            if(fileLines.get(i).matches("(\\s)*if(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")){
+            if (fileLines.get(i).matches("(\\s)*if(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")) {
                 //Cumple la expresión regular de un if
                 int parentheses1 = fileLines.get(i).indexOf("(");
                 int parentheses2 = fileLines.get(i).length();
-                if(fileLines.get(i).contains("{")){
+                if (fileLines.get(i).contains("{")) {
                     int limit = fileLines.get(i).indexOf("{");
                     for (int j = parentheses1; j < limit; j++) {
                         if (fileLines.get(i).charAt(j) == ')') {
                             parentheses2 = j;
                         }
                     }
-                }else{
+                } else {
                     for (int j = parentheses1; j < fileLines.get(i).length(); j++) {
                         if (fileLines.get(i).charAt(j) == ')') {
                             parentheses2 = j;
                         }
-                    }   
+                    }
                 }
-                lineIndexOfIf = i+1;
+                lineIndexOfIf = i + 1;
                 sentence = "";
                 for (int j = parentheses1; j <= parentheses2; j++) {
-                    sentence+=fileLines.get(i).charAt(j);
+                    sentence += fileLines.get(i).charAt(j);
                 }
-                lineEndOfIf = getLastLineKey(i)+1;
-                Object[] sen = {lineIndexOfIf,lineEndOfIf,sentence};
+                int ind = 0;
+                if(fileLines.get(i).indexOf("{") != -1){
+                    ind = fileLines.get(i).indexOf("{");
+                }
+                lineEndOfIf = getLastLineKey(i,ind) + 1;
+                Object[] sen = {lineIndexOfIf, lineEndOfIf, sentence};
                 sentences.add(sen);
             }
         }
-        
+
         return sentences;
     }
-    
+
+    public ArrayList<Object[]> getClassElifSentences() {
+        ArrayList<Object[]> sentences = new ArrayList();
+        int lineIndexOfElif = -1;
+        int lineEndOfElif = -1;
+        String sentence = "";
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)*(\\})?(\\s)*else(\\s)+if(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")) {
+                //Cumple la expresión regular de un else if
+                int parentheses1 = fileLines.get(i).indexOf("(");
+                int parentheses2 = fileLines.get(i).length();
+                if (fileLines.get(i).contains("{")) {
+                    int limit = fileLines.get(i).indexOf("{");
+                    for (int j = parentheses1; j < limit; j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }
+                } else {
+                    for (int j = parentheses1; j < fileLines.get(i).length(); j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }
+                }
+                lineIndexOfElif = i + 1;
+                sentence = "";
+                for (int j = parentheses1; j <= parentheses2; j++) {
+                    sentence += fileLines.get(i).charAt(j);
+                }
+                int ind = 0;
+                if(fileLines.get(i).indexOf("{") != -1){
+                    ind = fileLines.get(i).indexOf("{");
+                }
+                System.out.println(ind);
+                lineEndOfElif = getLastLineKey(i,ind) + 1;
+                Object[] sen = {lineIndexOfElif, lineEndOfElif, sentence};
+                sentences.add(sen);
+            }
+        }
+
+        return sentences;
+    }
+
     public String ignoreCharSequence(String w, String[] ignore) {
         String word = "";
         for (String wordToReplace : ignore) {
@@ -387,11 +454,11 @@ public class Report {
         }
         return res;
     }
-    
-    public String getDataType(String line){
+
+    public String getDataType(String line) {
         String res = "";
-        for(String dataType: Constants.DATATYPES){
-            if(line.contains(dataType)){
+        for (String dataType : Constants.DATATYPES) {
+            if (line.contains(dataType)) {
                 res = dataType;
                 break;
             }
@@ -406,7 +473,7 @@ public class Report {
         for (String line : txtFile.getLines()) {
             for (String t : tokens) {
                 if (line.contains(t)) {
-                    minimalReport.add("Se encontro el token\t\"" + t + "\"\ten la linea: " +( lineCount + 1)+ " en la posición: " + (line.indexOf(t) + 1));
+                    minimalReport.add("Se encontro el token\t\"" + t + "\"\ten la linea: " + (lineCount + 1) + " en la posición: " + (line.indexOf(t) + 1));
                 }
             }
             lineCount++;
@@ -414,28 +481,40 @@ public class Report {
         return minimalReport;
     }
 
-    public int getLastLineKey(int init){
+    public int getLastLineKey(int init, int cInit) {
         int res = -1;
         int keysOpened = 0;
         int keysClosed = 0;
+        boolean band = true;
         for (int i = init; i < fileLines.size(); i++) {
             char[] chars = fileLines.get(i).toCharArray();
-            for (int j = 0; j < chars.length; j++) {
-                if(chars[j] == '{'){
+            if(band){
+                for (int j = cInit; j < chars.length; j++) {
+                if (chars[j] == '{') {
                     keysOpened++;
-                }else if(chars[j] == '}'){
+                } else if (chars[j] == '}') {
                     keysClosed++;
                 }
+                }
+            }else{
+                for (int j = 0; j < chars.length; j++) {
+                if (chars[j] == '{') {
+                    keysOpened++;
+                } else if (chars[j] == '}') {
+                    keysClosed++;
+                }
+                }
             }
-            if(keysOpened == keysClosed){
+            band = false;
+            if (keysOpened == keysClosed && keysOpened != 0) {
                 res = i;
                 break;
             }
         }
         return res;
     }
-    
-    public int getLastLineCharSequence(int init,String charSequence){
+
+    public int getLastLineCharSequence(int init, String charSequence) {
         int res = -1;
         for (int i = init; i < fileLines.size(); i++) {
             if (fileLines.get(i).contains(charSequence)) {
@@ -445,7 +524,7 @@ public class Report {
         }
         return res;
     }
-    
+
     public void setTokens(String[] t) {
         this.tokens = t;
     }
