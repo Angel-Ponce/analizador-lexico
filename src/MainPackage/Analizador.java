@@ -311,6 +311,8 @@ public class Analizador extends javax.swing.JFrame {
             for(String s: t){
                 tokens[t.indexOf(s)] = s;
             }
+            Constants.DATATYPES.clear();
+            Constants.ACCESSMODIFIERS.clear();
             for(String s: txtDataTypes.getLines()){
                 Constants.DATATYPES.add(s);
             }
@@ -336,6 +338,8 @@ public class Analizador extends javax.swing.JFrame {
             for(String s: t){
                 tokens[t.indexOf(s)] = s;
             }
+            Constants.DATATYPES.clear();
+            Constants.ACCESSMODIFIERS.clear();
             for(String s: txtDataTypes.getLines()){
                 Constants.DATATYPES.add(s);
             }
