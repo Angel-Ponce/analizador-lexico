@@ -47,6 +47,8 @@ public class Report {
         scanAttributes();
         report.add("*---------------------------*Scaneo de metodos*---------------------------*");
         scanMethods();
+        report.add("*---------------------------*Scaneo de Sentencias if*---------------------------*");
+        scanIfSentences();
         return report;
     }
 
@@ -133,12 +135,23 @@ public class Report {
             report.add("Se econtro un comentario multi-linea que inicia en la linea "+comment[0]+" y finaliza en la linea "+((Integer)comment[1]+1));
             report.add("Contenido del comentario: ");
             for(Object s: (ArrayList) comment[2]){
-                report.add(s.toString()+"\n");
+                report.add(s.toString());
             }
             report.add("");
             for (int j = ((Integer)comment[0]-1); j <= ((Integer)comment[1]); j++) {
                 fileLines.set(j, "");
             }
+        }
+    }
+    
+    private void scanIfSentences(){
+        ArrayList<Object[]> sentences = getClassIfSentences();
+        for (int i = 0; i < sentences.size(); i++) {
+            Object[] sentence = sentences.get(i);
+            report.add("Se encontro una sentencia lógica tipo if en la linea "+sentence[0]);
+            report.add("La sentencia lógica de validación es: "+sentence[2]);
+            report.add("La sentencia finaliza en la linea: "+sentence[1]);
+            report.add("");
         }
     }
     
@@ -311,6 +324,44 @@ public class Report {
             }
         }
         return comments;
+    }
+    
+    public ArrayList<Object[]> getClassIfSentences(){
+        ArrayList<Object[]> sentences = new ArrayList();
+        int lineIndexOfIf = -1;
+        int lineEndOfIf = -1;
+        String sentence = "";
+        for (int i = 0; i < fileLines.size(); i++) {
+            if(fileLines.get(i).matches("(\\s)*if(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")){
+                //Cumple la expresión regular de un if
+                int parentheses1 = fileLines.get(i).indexOf("(");
+                int parentheses2 = fileLines.get(i).length();
+                if(fileLines.get(i).contains("{")){
+                    int limit = fileLines.get(i).indexOf("{");
+                    for (int j = parentheses1; j < limit; j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }
+                }else{
+                    for (int j = parentheses1; j < fileLines.get(i).length(); j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }   
+                }
+                lineIndexOfIf = i+1;
+                sentence = "";
+                for (int j = parentheses1; j <= parentheses2; j++) {
+                    sentence+=fileLines.get(i).charAt(j);
+                }
+                lineEndOfIf = getLastLineKey(i)+1;
+                Object[] sen = {lineIndexOfIf,lineEndOfIf,sentence};
+                sentences.add(sen);
+            }
+        }
+        
+        return sentences;
     }
     
     public String ignoreCharSequence(String w, String[] ignore) {
