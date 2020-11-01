@@ -46,4 +46,38 @@ public class Person{
     protected short numShort(){
     	return 1;
     }
+
+    if(this.name.getClass() == String){
+	System.out.println("Es verdadero")
+    }
+
+    if(this.age.getClass() == Integer){System.out.println("Es verdadero")}
+
+    private void method()
+    {
+    
+    }
+
+    if(this.name != null){
+	System.out.println("El nombre no existe");
+    }else if(this.name == ""){System.out.println("El nombre es vacio")}
+
+
+    switch(this.age){
+
+	case 18: System.out.println("Es mayor de edad")
+	break;
+
+	case 15: System.out.println("Es quinceañero")
+	break;
+    }
+
+    public void printMutiplicTable(int num, int long){
+	for( int i=1; int<=long; i++ ){
+		System.out.prinln(num+" * "+i+" = "+(num*i));
+	}
+    }
+
+    int var = 0;
+    while(var<10){System.out.println("Hola munado"); var++;}
 }
