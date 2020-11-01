@@ -20,6 +20,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Analizador extends javax.swing.JFrame {
     File tokens = new File("src/Files/Tokens.txt");
     Txt txtTokens = new Txt(tokens);
+    File datatypes = new File("src/Files/datatypes.txt");
+    Txt txtDataTypes = new Txt(datatypes);
+    File accessmodifiers = new File("src/Files/accessmodifiers.txt");
+    Txt txtAccessModifiers = new Txt(accessmodifiers);
     File file = null;
     Txt txtFile = null;
     /**
@@ -50,6 +54,8 @@ public class Analizador extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         buttonGitHub = new javax.swing.JButton();
         buttonViewMinimalReport = new javax.swing.JButton();
+        buttonAddModifier = new javax.swing.JButton();
+        buttonAddDataType = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
 
@@ -138,6 +144,26 @@ public class Analizador extends javax.swing.JFrame {
             }
         });
 
+        buttonAddModifier.setBackground(new java.awt.Color(51, 51, 51));
+        buttonAddModifier.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        buttonAddModifier.setForeground(new java.awt.Color(0, 0, 0));
+        buttonAddModifier.setText("Agregar modificador");
+        buttonAddModifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddModifierActionPerformed(evt);
+            }
+        });
+
+        buttonAddDataType.setBackground(new java.awt.Color(51, 51, 51));
+        buttonAddDataType.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        buttonAddDataType.setForeground(new java.awt.Color(0, 0, 0));
+        buttonAddDataType.setText("Agregar tipo de dato");
+        buttonAddDataType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddDataTypeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
         sidebarLayout.setHorizontalGroup(
@@ -145,6 +171,7 @@ public class Analizador extends javax.swing.JFrame {
             .addGroup(sidebarLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonAddModifier, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonGitHub)
                     .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -154,15 +181,16 @@ public class Analizador extends javax.swing.JFrame {
                         .addComponent(buttonSaveReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonViewReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonOpenFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonViewMinimalReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(buttonViewMinimalReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAddDataType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
             sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidebarLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonOpenFile)
                 .addGap(18, 18, 18)
                 .addComponent(buttonViewReport)
@@ -175,8 +203,12 @@ public class Analizador extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(buttonAddToken)
                 .addGap(18, 18, 18)
+                .addComponent(buttonAddDataType)
+                .addGap(18, 18, 18)
+                .addComponent(buttonAddModifier)
+                .addGap(18, 18, 18)
                 .addComponent(buttonClearWindow)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(buttonGitHub)
                 .addGap(17, 17, 17))
         );
@@ -279,6 +311,12 @@ public class Analizador extends javax.swing.JFrame {
             for(String s: t){
                 tokens[t.indexOf(s)] = s;
             }
+            for(String s: txtDataTypes.getLines()){
+                Constants.DATATYPES.add(s);
+            }
+            for(String s: txtAccessModifiers.getLines()){
+                Constants.ACCESSMODIFIERS.add(s);
+            }
             console.setText("");
             Report report = new Report(this.file, this.txtFile,tokens);
             ArrayList<String> r = report.getReport();
@@ -298,7 +336,12 @@ public class Analizador extends javax.swing.JFrame {
             for(String s: t){
                 tokens[t.indexOf(s)] = s;
             }
-            
+            for(String s: txtDataTypes.getLines()){
+                Constants.DATATYPES.add(s);
+            }
+            for(String s: txtAccessModifiers.getLines()){
+                Constants.ACCESSMODIFIERS.add(s);
+            }
             console.setText("");
             Report report = new Report(this.file, this.txtFile);
             report.setTokens(tokens);
@@ -310,6 +353,34 @@ public class Analizador extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
          }
     }//GEN-LAST:event_buttonViewMinimalReportActionPerformed
+
+    private void buttonAddModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddModifierActionPerformed
+      String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo modificador de acceso");
+      if(newToken != null){
+        if(newToken.length()>0){
+           txtAccessModifiers.addLine(newToken);
+           txtTokens.addLine(newToken);
+           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
+           console.setText("");
+        }else{
+            JOptionPane.showMessageDialog(null,"No se ingreso un modificador valido","Error",JOptionPane.ERROR_MESSAGE);
+        }   
+      }
+    }//GEN-LAST:event_buttonAddModifierActionPerformed
+
+    private void buttonAddDataTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddDataTypeActionPerformed
+        String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo tipo de dato");
+      if(newToken != null){
+        if(newToken.length()>0){
+           txtDataTypes.addLine(newToken);
+           txtTokens.addLine(newToken);
+           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
+           console.setText("");
+        }else{
+            JOptionPane.showMessageDialog(null,"No se ingreso un dato valido","Error",JOptionPane.ERROR_MESSAGE);
+        }   
+      }
+    }//GEN-LAST:event_buttonAddDataTypeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,6 +416,8 @@ public class Analizador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAddDataType;
+    private javax.swing.JButton buttonAddModifier;
     private javax.swing.JButton buttonAddToken;
     private javax.swing.JButton buttonClearWindow;
     private javax.swing.JButton buttonGitHub;
