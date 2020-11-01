@@ -182,7 +182,7 @@ public class Analizador extends javax.swing.JFrame {
         );
 
         console.setColumns(20);
-        console.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        console.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         console.setRows(5);
         jScrollPane1.setViewportView(console);
 
