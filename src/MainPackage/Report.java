@@ -47,11 +47,13 @@ public class Report {
         scanAttributes();
         report.add("*---------------------------*Scaneo de metodos*---------------------------*");
         scanMethods();
-        report.add("*---------------------------*Scaneo de Sentencias if*---------------------------*");
+        report.add("*---------------------------*Scaneo de sentencias if*---------------------------*");
         scanIfSentences();
         scanElifSentences();
-        report.add("*---------------------------*Scaneo de Sentencias switch*---------------------------*");
+        report.add("*---------------------------*Scaneo de sentencias switch*---------------------------*");
         scanSwitchSentences();
+        report.add("*---------------------------*Scaneo de bucles*---------------------------*");
+        scanBucles();
         return report;
     }
 
@@ -177,6 +179,17 @@ public class Report {
             report.add("La sentencia lógica de validación es: " + sentence[2]);
             report.add("El switch tiene "+sentence[3]+" casos");
             report.add("La sentencia finaliza en la linea: " + sentence[1]);
+            report.add("");
+        }
+    }
+    
+    private void scanBucles() {
+        ArrayList<Object[]> sentences = getClassBucles();
+        for (int i = 0; i < sentences.size(); i++) {
+            Object[] sentence = sentences.get(i);
+            report.add("Se encontro un bucle tipo "+sentence[3]+" en la linea " + sentence[0]);
+            report.add("La sentencia lógica de iteración es: " + sentence[2]);
+            report.add("El bucle finaliza en la linea: " + sentence[1]);
             report.add("");
         }
     }
@@ -490,6 +503,56 @@ public class Report {
             }
         }
         
+        return sentences;
+    }
+    
+    public ArrayList<Object[]> getClassBucles() {
+        ArrayList<Object[]> sentences = new ArrayList();
+        int lineIndexOfBucle = -1;
+        int lineEndOfBucle = -1;
+        String type = "";
+        String sentence = "";
+        for (int i = 0; i < fileLines.size(); i++) {
+            if (fileLines.get(i).matches("(\\s)*(for|while|foreach)(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")) {
+                //Cumple la expresión regular de un bucle
+                int parentheses1 = fileLines.get(i).indexOf("(");
+                int parentheses2 = fileLines.get(i).length();
+                if (fileLines.get(i).contains("{")) {
+                    int limit = fileLines.get(i).indexOf("{");
+                    for (int j = parentheses1; j < limit; j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }
+                } else {
+                    for (int j = parentheses1; j < fileLines.get(i).length(); j++) {
+                        if (fileLines.get(i).charAt(j) == ')') {
+                            parentheses2 = j;
+                        }
+                    }
+                }
+                lineIndexOfBucle = i + 1;
+                sentence = "";
+                for (int j = parentheses1; j <= parentheses2; j++) {
+                    sentence += fileLines.get(i).charAt(j);
+                }
+                int ind = 0;
+                if(fileLines.get(i).indexOf("{") != -1){
+                    ind = fileLines.get(i).indexOf("{");
+                }
+                lineEndOfBucle = getLastLineKey(i,ind) + 1;
+                if(fileLines.get(i).contains("for")){
+                    type = "for";
+                }else if(fileLines.get(i).contains("foreach")){
+                    type = "foreach";
+                }else if(fileLines.get(i).contains("while")){
+                    type = "while";
+                }
+                Object[] sen = {lineIndexOfBucle, lineEndOfBucle, sentence,type};
+                sentences.add(sen);
+            }
+        }
+
         return sentences;
     }
     
