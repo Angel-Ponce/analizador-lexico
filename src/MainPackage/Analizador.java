@@ -7,6 +7,7 @@ package MainPackage;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -18,6 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Angel
  */
 public class Analizador extends javax.swing.JFrame {
+
     File tokens = new File("src/Files/Tokens.txt");
     Txt txtTokens = new Txt(tokens);
     File datatypes = new File("src/Files/datatypes.txt");
@@ -26,6 +28,7 @@ public class Analizador extends javax.swing.JFrame {
     Txt txtAccessModifiers = new Txt(accessmodifiers);
     File file = null;
     Txt txtFile = null;
+
     /**
      * Creates new form Analizador
      */
@@ -91,6 +94,11 @@ public class Analizador extends javax.swing.JFrame {
         buttonSaveReport.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
         buttonSaveReport.setForeground(new java.awt.Color(0, 0, 0));
         buttonSaveReport.setText("Guardar reporte");
+        buttonSaveReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveReportActionPerformed(evt);
+            }
+        });
 
         buttonSeeTokens.setBackground(new java.awt.Color(51, 51, 51));
         buttonSeeTokens.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
@@ -259,18 +267,18 @@ public class Analizador extends javax.swing.JFrame {
 
     private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
         JFileChooser open = new JFileChooser();
-        open.setFileFilter( new FileNameExtensionFilter(".txt (hola inge)", "txt", "text"));
+        open.setFileFilter(new FileNameExtensionFilter(".txt (hola inge)", "txt", "text"));
         open.showOpenDialog(this);
         console.setText("");
         File myFile = open.getSelectedFile();
-        if(myFile != null){
+        if (myFile != null) {
             Txt file = new Txt(myFile);
             ArrayList<String> lines = file.getLines();
-            lines.forEach((o)->console.append(o+"\n"));
+            lines.forEach((o) -> console.append(o + "\n"));
             this.file = myFile;
             this.txtFile = file;
         }
-        
+
     }//GEN-LAST:event_buttonOpenFileActionPerformed
 
     private void buttonGitHubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGitHubActionPerformed
@@ -287,104 +295,134 @@ public class Analizador extends javax.swing.JFrame {
         this.txtFile = null;
         ArrayList<String> lines = txtTokens.getLines();
         lines.forEach((String s) -> {
-            console.append(s+"\n");
+            console.append(s + "\n");
         });
     }//GEN-LAST:event_buttonSeeTokensActionPerformed
 
     private void buttonAddTokenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddTokenActionPerformed
-      String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo token");
-      if(newToken != null){
-        if(newToken.length()>0){
-           txtTokens.addLine(newToken);
-           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
-           console.setText("");
-        }else{
-            JOptionPane.showMessageDialog(null,"No se ingreso un token valido","Error",JOptionPane.ERROR_MESSAGE);
-        }   
-      }
+        String newToken = JOptionPane.showInputDialog(null, "Ingrese el nuevo token");
+        if (newToken != null) {
+            if (newToken.length() > 0) {
+                txtTokens.addLine(newToken);
+                JOptionPane.showMessageDialog(null, "Se agrego correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                console.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ingreso un token valido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_buttonAddTokenActionPerformed
 
     private void buttonViewReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewReportActionPerformed
-        if(this.file != null){
+        if (this.file != null) {
             ArrayList<String> t = txtTokens.getLines();
             String[] tokens = new String[t.size()];
-            for(String s: t){
+            for (String s : t) {
                 tokens[t.indexOf(s)] = s;
             }
             Constants.DATATYPES.clear();
             Constants.ACCESSMODIFIERS.clear();
-            for(String s: txtDataTypes.getLines()){
+            for (String s : txtDataTypes.getLines()) {
                 Constants.DATATYPES.add(s);
             }
-            for(String s: txtAccessModifiers.getLines()){
+            for (String s : txtAccessModifiers.getLines()) {
                 Constants.ACCESSMODIFIERS.add(s);
             }
             console.setText("");
-            Report report = new Report(this.file, this.txtFile,tokens);
+            Report report = new Report(this.file, this.txtFile, tokens);
             ArrayList<String> r = report.getReport();
-            r.forEach((String e)->{
-                console.append(e+"\n");
+            r.forEach((String e) -> {
+                console.append(e + "\n");
             });
-         }else{
-             JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
-         }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonViewReportActionPerformed
 
     private void buttonViewMinimalReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonViewMinimalReportActionPerformed
-       
-        if(this.file != null){
+
+        if (this.file != null) {
             ArrayList<String> t = txtTokens.getLines();
             String[] tokens = new String[t.size()];
-            for(String s: t){
+            for (String s : t) {
                 tokens[t.indexOf(s)] = s;
             }
             Constants.DATATYPES.clear();
             Constants.ACCESSMODIFIERS.clear();
-            for(String s: txtDataTypes.getLines()){
+            for (String s : txtDataTypes.getLines()) {
                 Constants.DATATYPES.add(s);
             }
-            for(String s: txtAccessModifiers.getLines()){
+            for (String s : txtAccessModifiers.getLines()) {
                 Constants.ACCESSMODIFIERS.add(s);
             }
             console.setText("");
             Report report = new Report(this.file, this.txtFile);
             report.setTokens(tokens);
             ArrayList<String> r = report.getMinimalReport();
-            r.forEach((String e)->{
-                console.append(e+"\n");
+            r.forEach((String e) -> {
+                console.append(e + "\n");
             });
-         }else{
-             JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte","Error",JOptionPane.ERROR_MESSAGE);
-         }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay ningún archivo de texto para generar el reporte", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonViewMinimalReportActionPerformed
 
     private void buttonAddModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddModifierActionPerformed
-      String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo modificador de acceso");
-      if(newToken != null){
-        if(newToken.length()>0){
-           txtAccessModifiers.addLine(newToken);
-           txtTokens.addLine(newToken);
-           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
-           console.setText("");
-        }else{
-            JOptionPane.showMessageDialog(null,"No se ingreso un modificador valido","Error",JOptionPane.ERROR_MESSAGE);
-        }   
-      }
+        String newToken = JOptionPane.showInputDialog(null, "Ingrese el nuevo modificador de acceso");
+        if (newToken != null) {
+            if (newToken.length() > 0) {
+                txtAccessModifiers.addLine(newToken);
+                txtTokens.addLine(newToken);
+                JOptionPane.showMessageDialog(null, "Se agrego correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                console.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ingreso un modificador valido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_buttonAddModifierActionPerformed
 
     private void buttonAddDataTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddDataTypeActionPerformed
-        String newToken = JOptionPane.showInputDialog(null,"Ingrese el nuevo tipo de dato");
-      if(newToken != null){
-        if(newToken.length()>0){
-           txtDataTypes.addLine(newToken);
-           txtTokens.addLine(newToken);
-           JOptionPane.showMessageDialog(null, "Se agrego correctamente","Exito",JOptionPane.INFORMATION_MESSAGE);
-           console.setText("");
-        }else{
-            JOptionPane.showMessageDialog(null,"No se ingreso un dato valido","Error",JOptionPane.ERROR_MESSAGE);
-        }   
-      }
+        String newToken = JOptionPane.showInputDialog(null, "Ingrese el nuevo tipo de dato");
+        if (newToken != null) {
+            if (newToken.length() > 0) {
+                txtDataTypes.addLine(newToken);
+                txtTokens.addLine(newToken);
+                JOptionPane.showMessageDialog(null, "Se agrego correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                console.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ingreso un dato valido", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_buttonAddDataTypeActionPerformed
+
+    private void buttonSaveReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveReportActionPerformed
+        if (this.file != null) {
+            JFileChooser save = new JFileChooser();
+            save.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            save.showSaveDialog(this);
+            File direc = save.getSelectedFile();
+
+            if (direc != null) {
+                String path = direc.getPath();
+                try {
+                    File newFile = new File(path + ".txt");
+                    Txt txtNewFile = new Txt(newFile);
+                    if (newFile.createNewFile()) {
+                        String[] lines = console.getText().split("\n");
+                        for (String s : lines) {
+                            txtNewFile.addLine(s);
+                        }
+                        JOptionPane.showMessageDialog(null, "El archivo se guardo correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                    }
+                } catch (Exception e) {
+                    System.err.println(e);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay ningún reporte generado");
+        }
+    }//GEN-LAST:event_buttonSaveReportActionPerformed
 
     /**
      * @param args the command line arguments
