@@ -408,12 +408,14 @@ public class Analizador extends javax.swing.JFrame {
                     Txt txtNewFile = new Txt(newFile);
                     if (newFile.createNewFile()) {
                         String[] lines = console.getText().split("\n");
+                        ArrayList<String> lin = new ArrayList();
                         for (String s : lines) {
-                            txtNewFile.addLine(s);
+                            lin.add(s);
                         }
-                        JOptionPane.showMessageDialog(null, "El archivo se guardo correctamente");
+                        txtNewFile.addContent(lin);
+                        JOptionPane.showMessageDialog(null, "El reporte se guardo correctamente");
                     } else {
-                        JOptionPane.showMessageDialog(null, "Ocurrio un error");
+                        JOptionPane.showMessageDialog(null, "No se ha guardado el reporte");
                     }
                 } catch (Exception e) {
                     System.err.println(e);

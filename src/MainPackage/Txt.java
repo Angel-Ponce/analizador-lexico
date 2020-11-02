@@ -62,5 +62,24 @@ public class Txt {
         }
     }
     
-    
+    public void addContent(ArrayList<String> lines){
+        FileWriter fw = null;
+        PrintWriter pw = null;
+        try {
+            fw = new FileWriter(this.file,true);
+            pw = new PrintWriter(fw);
+            for(String l: lines){
+                pw.println(l);
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        }finally{
+             try {
+                if (null != fw)
+                   fw.close();
+                } catch (IOException e2) {
+                   System.err.println(e2);
+                }
+        }
+    }
 }
