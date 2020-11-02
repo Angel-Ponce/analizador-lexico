@@ -177,23 +177,23 @@ public class Report {
             Object[] sentence = sentences.get(i);
             report.add("Se encontro una sentencia lógica tipo switch en la linea " + sentence[0]);
             report.add("La sentencia lógica de validación es: " + sentence[2]);
-            report.add("El switch tiene "+sentence[3]+" casos");
+            report.add("El switch tiene " + sentence[3] + " casos");
             report.add("La sentencia finaliza en la linea: " + sentence[1]);
             report.add("");
         }
     }
-    
+
     private void scanBucles() {
         ArrayList<Object[]> sentences = getClassBucles();
         for (int i = 0; i < sentences.size(); i++) {
             Object[] sentence = sentences.get(i);
-            report.add("Se encontro un bucle tipo "+sentence[3]+" en la linea " + sentence[0]);
+            report.add("Se encontro un bucle tipo " + sentence[3] + " en la linea " + sentence[0]);
             report.add("La sentencia lógica de iteración es: " + sentence[2]);
             report.add("El bucle finaliza en la linea: " + sentence[1]);
             report.add("");
         }
     }
-    
+
     public ArrayList<Object> getClassData() {
         int lineIndexOfClassName = -1;
         String className = "";
@@ -282,10 +282,10 @@ public class Report {
                     params += fileLines.get(i).charAt(j);
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                limit = getLastLineKey(i,ind) + 1;
+                limit = getLastLineKey(i, ind) + 1;
                 Object[] constructor = {lineIndexOfConstructor, params, className, limit};
                 constructors.add(constructor);
             }
@@ -324,10 +324,10 @@ public class Report {
                     returnType = getDataType(fileLines.get(i));
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                limit = getLastLineKey(i,ind) + 1;
+                limit = getLastLineKey(i, ind) + 1;
                 String[] ignore = {accessModifier, returnType, params, rest, "{", "}"};
                 methodName = ignoreCharSequence(fileLines.get(i), ignore);
                 Object[] method = {lineIndexOfMethod, accessModifier, returnType, methodName, params, limit};
@@ -403,10 +403,10 @@ public class Report {
                     sentence += fileLines.get(i).charAt(j);
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                lineEndOfIf = getLastLineKey(i,ind) + 1;
+                lineEndOfIf = getLastLineKey(i, ind) + 1;
                 Object[] sen = {lineIndexOfIf, lineEndOfIf, sentence};
                 sentences.add(sen);
             }
@@ -424,7 +424,7 @@ public class Report {
             if (fileLines.get(i).matches("(\\s)*(\\})?(\\s)*else(\\s)+if(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\{?.*)")) {
                 //Cumple la expresión regular de un else if
                 int parentheses1 = fileLines.get(i).indexOf("(");
-                int parentheses2 = fileLines.get(i).length()-1;
+                int parentheses2 = fileLines.get(i).length() - 1;
                 if (fileLines.get(i).contains("{")) {
                     int limit = fileLines.get(i).indexOf("{");
                     for (int j = parentheses1; j < limit; j++) {
@@ -445,10 +445,10 @@ public class Report {
                     sentence += fileLines.get(i).charAt(j);
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                lineEndOfElif = getLastLineKey(i,ind) + 1;
+                lineEndOfElif = getLastLineKey(i, ind) + 1;
                 Object[] sen = {lineIndexOfElif, lineEndOfElif, sentence};
                 sentences.add(sen);
             }
@@ -457,7 +457,7 @@ public class Report {
         return sentences;
     }
 
-    public ArrayList<Object[]> getClassSwitchSentences(){
+    public ArrayList<Object[]> getClassSwitchSentences() {
         ArrayList<Object[]> sentences = new ArrayList();
         int lineIndexOfSwitch = -1;
         int lineEndOfSwitch = -1;
@@ -465,9 +465,9 @@ public class Report {
         for (int i = 0; i < fileLines.size(); i++) {
             if (fileLines.get(i).matches("(\\s)*switch(\\s)*(\\()(\\s)*(.)+(\\s)*(\\))(\\s)*((\\{)(.)*)?")) {
                 //Cumple con la expresión regular de un switch
-                lineIndexOfSwitch = i+1;
+                lineIndexOfSwitch = i + 1;
                 int parentheses1 = fileLines.get(i).indexOf("(");
-                int parentheses2 = fileLines.get(i).length()-1;
+                int parentheses2 = fileLines.get(i).length() - 1;
                 if (fileLines.get(i).contains("{")) {
                     int limit = fileLines.get(i).indexOf("{");
                     for (int j = parentheses1; j < limit; j++) {
@@ -487,25 +487,25 @@ public class Report {
                     sentence += fileLines.get(i).charAt(j);
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                lineEndOfSwitch = getLastLineKey(i,ind) + 1;
+                lineEndOfSwitch = getLastLineKey(i, ind) + 1;
                 int cases = 0;
                 for (int j = lineIndexOfSwitch; j < lineEndOfSwitch; j++) {
-                    if(fileLines.get(j).contains("case")){
+                    if (fileLines.get(j).contains("case")) {
                         cases++;
                     }
                 }
-                Object[] sen = {lineIndexOfSwitch, lineEndOfSwitch, sentence,cases};
+                Object[] sen = {lineIndexOfSwitch, lineEndOfSwitch, sentence, cases};
                 sentences.add(sen);
-                
+
             }
         }
-        
+
         return sentences;
     }
-    
+
     public ArrayList<Object[]> getClassBucles() {
         ArrayList<Object[]> sentences = new ArrayList();
         int lineIndexOfBucle = -1;
@@ -537,25 +537,25 @@ public class Report {
                     sentence += fileLines.get(i).charAt(j);
                 }
                 int ind = 0;
-                if(fileLines.get(i).indexOf("{") != -1){
+                if (fileLines.get(i).indexOf("{") != -1) {
                     ind = fileLines.get(i).indexOf("{");
                 }
-                lineEndOfBucle = getLastLineKey(i,ind) + 1;
-                if(fileLines.get(i).contains("for")){
+                lineEndOfBucle = getLastLineKey(i, ind) + 1;
+                if (fileLines.get(i).contains("for")) {
                     type = "for";
-                }else if(fileLines.get(i).contains("foreach")){
+                } else if (fileLines.get(i).contains("foreach")) {
                     type = "foreach";
-                }else if(fileLines.get(i).contains("while")){
+                } else if (fileLines.get(i).contains("while")) {
                     type = "while";
                 }
-                Object[] sen = {lineIndexOfBucle, lineEndOfBucle, sentence,type};
+                Object[] sen = {lineIndexOfBucle, lineEndOfBucle, sentence, type};
                 sentences.add(sen);
             }
         }
 
         return sentences;
     }
-    
+
     public String ignoreCharSequence(String w, String[] ignore) {
         String word = "";
         for (String wordToReplace : ignore) {
@@ -613,21 +613,21 @@ public class Report {
         boolean band = true;
         for (int i = init; i < fileLines.size(); i++) {
             char[] chars = fileLines.get(i).toCharArray();
-            if(band){
+            if (band) {
                 for (int j = cInit; j < chars.length; j++) {
-                if (chars[j] == '{') {
-                    keysOpened++;
-                } else if (chars[j] == '}') {
-                    keysClosed++;
+                    if (chars[j] == '{') {
+                        keysOpened++;
+                    } else if (chars[j] == '}') {
+                        keysClosed++;
+                    }
                 }
-                }
-            }else{
+            } else {
                 for (int j = 0; j < chars.length; j++) {
-                if (chars[j] == '{') {
-                    keysOpened++;
-                } else if (chars[j] == '}') {
-                    keysClosed++;
-                }
+                    if (chars[j] == '{') {
+                        keysOpened++;
+                    } else if (chars[j] == '}') {
+                        keysClosed++;
+                    }
                 }
             }
             band = false;
