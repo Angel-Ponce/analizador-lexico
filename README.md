@@ -32,7 +32,7 @@ To configure your own language go to the folder ``` .. \ analyzer \ src \ Files 
 | `Origin.txt` | Test your lexical analyzer with some example of your programming language |
 | `Tokens.txt` | Words reserved by your programming language |
 
-Note: In the file `Tokens.txt` must be the combination of the files `accessmodifiers.txt` and  `datatypes.txt`
+Note: In the file `Tokens.txt` must be the combination of the files `accessmodifiers.txt` , `datatypes.txt` and the other words reserved
 
 # Authors
 [Angel Ponce](https://github.com/Angel-Ponce)
