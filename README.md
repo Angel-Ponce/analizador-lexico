@@ -24,7 +24,7 @@ First install project in your system
 $ git clone https://github.com/Angel-Ponce/analizador-lexico
 ```
 
-To configure your own language go to the folder .. \ analyzer \ src \ Files and modify the files that the folder contains
+To configure your own language go to the folder ``` .. \ analyzer \ src \ Files ``` and modify the files that the folder contains
 | File | Description |
 | ------ | ------ |
 | `accessmodifiers.txt` | It refers to the access modifiers that your fields may have |
@@ -32,7 +32,7 @@ To configure your own language go to the folder .. \ analyzer \ src \ Files and 
 | `Origin.txt` | Test your lexical analyzer with some example of your programming language |
 | `Tokens.txt` | Words reserved by your programming language |
 
-### Note: In the file `Tokens.txt` must be the combination of the files `accessmodifiers.txt` and  `datatypes.txt`
+Note: In the file `Tokens.txt` must be the combination of the files `accessmodifiers.txt` and  `datatypes.txt`
 
 # Authors
 [Angel Ponce](https://github.com/Angel-Ponce)
